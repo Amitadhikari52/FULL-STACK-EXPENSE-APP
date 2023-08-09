@@ -1,27 +1,23 @@
-function signup(e) {
-    e.preventDefault();
+async function signup(e) {
+    try {
+        e.preventDefault();
+        console.log(e.target.email.value);
 
-    let name = document.getElementById('name').value;
-    let email = document.getElementById('email').value;
-    let password = document.getElementById('password').value;
+        const signupDetails = {
+            name: e.target.name.value,
+            email: e.target.email.value,
+            password: e.target.password.value
 
-    const userDetails = {
-        name,
-        email,
-        password
-    };
+        }
+        console.log(signupDetails)
+        const response = await axios.post('http://localhost:3000/user/signup',signupDetails)
+        if (response.status === 201) {
+            window.location.href = "../Login/login.html"
+        } else {
+            throw new Error("Failed to login")
+        }
 
-    displayMessage("User registered successfully!", true);
-}
-
-function displayMessage(msg, successOrFailure) {
-    const messageDiv = document.getElementById('message');
-    messageDiv.innerHTML = '';
-
-    const messageElement = document.createElement('h2');
-    messageElement.style.color = successOrFailure ? 'green' : 'red';
-    messageElement.textContent = msg;
-
-    messageDiv.appendChild(messageElement);
-
+    }catch (err) {
+        document.body.innerHTML += `<div style="color:red;">${err} <div>`;
+    }
 }
