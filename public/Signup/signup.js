@@ -23,4 +23,5 @@ function displayMessage(msg, successOrFailure) {
     messageElement.textContent = msg;
 
     messageDiv.appendChild(messageElement);
+
 }
