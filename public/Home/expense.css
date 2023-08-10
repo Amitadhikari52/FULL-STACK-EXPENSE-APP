@@ -1,0 +1,115 @@
+/* Your existing CSS */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+  }
+  
+  .container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  h1 {
+    text-align: center;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  label {
+    margin-bottom: 8px;
+  }
+  
+  input,
+  select {
+    padding: 5px;
+    margin-bottom: 10px;
+  }
+  
+  button {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  th,
+  td {
+    padding: 8px;
+    border-bottom: 1px solid #ccc;
+    text-align: center;
+  }
+  
+  .no-data {
+    text-align: center;
+    font-style: italic;
+  }
+  
+  /* Additional styles for expense.html */
+  
+  /* #rzp-button1 {
+    margin-top: 20px;
+  }
+   */
+  #listOfExpenses {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .expense-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+  }
+  
+  .expense-item-description {
+    flex: 1;
+    margin-right: 10px;
+  }
+  
+  .expense-item-amount {
+    font-weight: bold;
+  }
+  
+  #leaderboard {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .leaderboard-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+  }
+  
+  .leaderboard-item-name {
+    flex: 1;
+    margin-right: 10px;
+  }
+  
+  .leaderboard-item-score {
+    font-weight: bold;
+  }
+  
