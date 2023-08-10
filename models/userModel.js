@@ -1,31 +1,21 @@
-const connection = require('../util/db');
+const Sequelize = require('sequelize');
+const sequelize = require('../util/db');
 
-const userModel = {
-  createUser: (username, password) => {
-    const sql = 'INSERT INTO users (username, password) VALUES (?, ?)';
-    return new Promise((resolve, reject) => {
-      connection.query(sql, [username, password], (err, result) => {
-        if (err) {
-          reject(err);
-          return;
-        }
-        resolve(result);
-      });
-    });
+const User = sequelize.define('user', {
+  id: {
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+    allowNull: false,
+    primaryKey: true,
   },
+  name: Sequelize.STRING,
+  email: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    unique: true,
+  },
+  password: Sequelize.STRING,
+  ispremiumuser: Sequelize.BOOLEAN,
+});
 
-  getUserByUsernameAndPassword: (username, password) => {
-    const sql = 'SELECT * FROM users WHERE username = ? AND password = ?';
-    return new Promise((resolve, reject) => {
-      connection.query(sql, [username, password], (err, result) => {
-        if (err) {
-          reject(err);
-          return;
-        }
-        resolve(result);
-      });
-    });
-  }
-};
-
-module.exports = userModel;
+module.exports = User;
