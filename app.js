@@ -5,19 +5,27 @@ const sequelize = require('./util/db');
 
 const User = require('./models/userModel');
 const Expense = require('./models/expenseModel');
+const Order = require('./models/ordersModel');
+
 
 const userRoutes = require('./routes/userRoute'); 
 const expenseRoutes = require('./routes/expenseRoute')
+const purchaseRoutes = require('./routes/purchaseRoute')
 
 const app = express();
+const dotenv = require('dotenv');
+
+
+// get config vars
+dotenv.config();
 
 app.use(cors());
 app.use(express.json());
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/user', userRoutes);
-// app.use('/expense', expenseRoutes);
 app.use('/expenses', expenseRoutes);
+app.use('/purchase', purchaseRoutes)
 
 
 //public\Login\login.html
@@ -33,9 +41,6 @@ app.get('/signup',(req,res)=>{
   res.sendFile(path.join(__dirname,'public/Signup','signup.html'))
 });
 
-// app.get('/expense',(req,res)=>{
-//   res.sendFile(path.join(__dirname,'public/Home','expense.html'))
-// });
 
 app.get('/expenses', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/Home', 'expense.html'));
@@ -43,6 +48,9 @@ app.get('/expenses', (req, res) => {
 
 User.hasMany(Expense);
 Expense.belongsTo(User);
+
+User.hasMany(Order);
+Order.belongsTo(User);
 
 sequelize.sync()
   .then(() => {
