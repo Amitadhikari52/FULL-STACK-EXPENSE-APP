@@ -42,7 +42,10 @@ app.get('/expenses', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/Home', 'expense.html'));
 });
 
-sequelize.sync()
+User.hasMany(Expense);
+Expense.belongsTo(User);
+
+sequelize.sync({force:true})
   .then(() => {
     app.listen(3000, () => {
       console.log('Server is running on port 3000');
