@@ -8,16 +8,16 @@ const addexpense = async (req, res) => {
   }
 
   try {
-    const expense = await Expense.create({ expenseamount, description, category, userId: req.user.id});
+    const expense = await Expense.create({ expenseamount, description, category ,userId: req.user.id});  
     return res.status(201).json({ expense, success: true });
   } catch (err) {
     return res.status(500).json({ success: false, error: err });
   }
-};
+}; 
 
 const getexpenses = async (req, res) => {
   try {
-    const expenses = await Expense.findAll({ where : { userId: req.user.id}})
+    const expenses = await Expense.findAll({ where : { userId: req.user.id}})   
     return res.status(200).json({ expenses, success: true });
   } catch (err) {
     console.error(err);
@@ -27,13 +27,12 @@ const getexpenses = async (req, res) => {
 
 const deleteexpense = async (req, res) => {
   const expenseid = req.params.expenseid;
-
   if (!expenseid) {
     return res.status(400).json({ success: false, message: 'Expense ID is missing' });
   }
 
   try {
-    await Expense.destroy({ where: { id: expenseid,  userId: req.user.id } });
+    await Expense.destroy({ where: { id: expenseid,  userId: req.user.id } });   
     return res.status(200).json({ success: true, message: 'Deleted successfully' });
   } catch (err) {
     console.error(err);

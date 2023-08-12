@@ -1,5 +1,4 @@
 const path = require('path');
-
 const express = require('express');
 const cors = require('cors');
 const sequelize = require('./util/db');
@@ -45,7 +44,7 @@ app.get('/expenses', (req, res) => {
 User.hasMany(Expense);
 Expense.belongsTo(User);
 
-sequelize.sync({force:true})
+sequelize.sync()
   .then(() => {
     app.listen(3000, () => {
       console.log('Server is running on port 3000');
