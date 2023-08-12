@@ -2,6 +2,11 @@
 
 /* ... Rest of your existing CSS */
 
+body {
+  background: linear-gradient(135deg, lightgreen, cyan);
+}
+
+
 .container {
     /* ... Rest of your existing container styles */
     background-color: #fff;

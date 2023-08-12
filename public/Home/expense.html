@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Expense Tracker</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="./expense.css">
+    <link rel="stylesheet" href="../Home/expense.css">
 </head>
 <body>
     <div class="container mt-5">
@@ -26,22 +26,40 @@
             <div class="form-group">
                 <label for="category">Category:</label>
                 <select class="form-control" id="category" name="category">
+                    <option selected>Choose category</option>
                     <option value="fuel">Fuel</option>
                     <option value="food">Food</option>
-                    <option value="electricity">Electricity</option>
+                    <option value="utilities">Utilities</option>
                     <option value="movie">Movie</option>
+                    <option value="entertainment">Entertainment </option>
+                    <option value="housing">Housing</option>
+                    <option value="gadgets">Gadgets</option>
+                    <option value="furniture">Furniture</option>
+                    <option value="others">Others</option>
+                  </select>
                 </select>
             </div>
             <button class="btn btn-primary">Add Expense</button>
         </form>
 
         <h2 class="mt-4">Expenses</h2>
-        <ul id="listOfExpenses" class="list-group"></ul>
-
+        <table class="table table-striped">
+            <tbody id="listOfExpenses">
+                <!-- Expense Table goes here -->
+                <thead>
+                    <tr>
+                        <th>Amount</th>
+                        <th>Description</th>
+                        <th>Category</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+            </tbody>
+        </table>
     </div>
 
-    <script src="./expense.js"></script>
+    <script src="../Home/expense.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
 </body>
 </html>
-

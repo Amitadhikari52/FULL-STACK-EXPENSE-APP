@@ -1,5 +1,6 @@
 async function signup(e) {
     try {
+        debugger;
         e.preventDefault();
         console.log(e.target.email.value);
 
@@ -12,7 +13,7 @@ async function signup(e) {
         console.log(signupDetails)
         const response = await axios.post('http://localhost:3000/user/signup',signupDetails)
         if (response.status === 201) {
-            window.location.href = "../Login/login.html"
+            window.location.href = "/login"
         } else {
             throw new Error("Failed to login")
         }

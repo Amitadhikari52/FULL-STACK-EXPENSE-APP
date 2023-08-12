@@ -1,71 +1,95 @@
-function addNewExpense(e) {
-    e.preventDefault();
-  
-    const expenseDetails = {
-      expenseamount: e.target.expenseamount.value,
-      description: e.target.description.value,
-      category: e.target.category.value,
-    };
-  
-    const token = localStorage.getItem('token');
-    axios
-      .post('http://localhost:3000/expense/addexpense', expenseDetails, {
-        headers: { Authorization: token },
-      })
-      .then((response) => {
-        addNewExpensetoUI(response.data.expense);
-      })
-      .catch((err) => showError(err)); // Call showError function to display error
+async function addNewExpense(e) {
+  e.preventDefault();
+
+  const expenseDetails = {
+    expenseamount: e.target.expenseamount.value,
+    description: e.target.description.value,
+    category: e.target.category.value,
+  };
+
+  console.log(expenseDetails)
+  try {
+    const response = await axios.post('http://localhost:3000/expenses/addexpense', expenseDetails);
+    addNewExpensetoUI(response.data.expense);
+  } catch (err) {
+    showError(err);
   }
-  
-  function editExpense(expenseid) {
-    // Implement edit functionality here
-    console.log(`Editing expense with ID: ${expenseid}`);
+}
+
+window.addEventListener('DOMContentLoaded', async () => {
+  try {
+    const response = await axios.get('http://localhost:3000/expenses/getexpenses');
+    response.data.expenses.forEach((expense) => {
+      addNewExpensetoUI(expense);
+    });
+  } catch (err) {
+    showError(err);
   }
-  
-  function deleteExpense(expenseid) {
-    const token = localStorage.getItem('token');
-    axios
-      .delete(`http://localhost:3000/expense/deleteexpense/${expenseid}`, {
-        headers: { Authorization: token },
-      })
-      .then(() => {
-        removeExpensefromUI(expenseid);
-      })
-      .catch((err) => showError(err)); // Call showError function to display error
+});
+
+function addNewExpensetoUI(expense) {
+  const parentElement = document.getElementById('listOfExpenses');
+  const expenseElemId = `expense-${expense.id}`;
+  parentElement.innerHTML += `
+  <tr id="${expenseElemId}">
+  <td>${expense.expenseamount}</td>
+    <td>${expense.description}</td>
+    <td>${expense.category}</td>
+    <td>${expense.createdAt}</td>
+    <td>
+        <button onclick="deleteExpense(event, ${expense.id})">Delete Expense</button>
+    </td>
+    </tr>`;
+}
+
+async function deleteExpense(e, expenseid) {
+  e.preventDefault();
+
+  try {
+    await axios.delete(`http://localhost:3000/expenses/deleteexpense/${expenseid}`); // Change URL here
+    removeExpensefromUI(expenseid);
+  } catch (err) {
+    showError(err);
   }
-  
-  function addNewExpensetoUI(expense) {
-    const parentElement = document.getElementById('listOfExpenses');
-    const expenseElemId = `expense-${expense.id}`;
-    const editButton = `<button onclick='editExpense(${expense.id})'>Edit</button>`;
-    const deleteButton = `<button onclick='deleteExpense(${expense.id})'>Delete</button>`;
-    parentElement.innerHTML += `
-      <li id=${expenseElemId} class="expense-item">
-          <div class="expense-item-description">
-              ${expense.expenseamount} - ${expense.category} - ${expense.description}
-          </div>
-          <div class="expense-item-actions">
-              ${editButton} ${deleteButton}
-          </div>
-      </li>`;
-  }
-  
-  function removeExpensefromUI(expenseid) {
-    const expenseElemId = `expense-${expenseid}`;
-    document.getElementById(expenseElemId).remove();
-  }
-  
-  function showError(err) {
-    // Display the error message in the message div
-    const messageDiv = document.getElementById('message');
-    messageDiv.innerHTML = `<div style="color: red;">${err}</div>`;
-  }
-  
-  // Other functions remain unchanged
-  
-  // DOMContentLoaded event listener
-  window.addEventListener('DOMContentLoaded', () => {
-    // ... (Other code remains unchanged)
-  });
-  
+}
+
+function showError(err) {
+  console.error(err);
+}
+
+function removeExpensefromUI(expenseid) {
+  const expenseElemId = `expense-${expenseid}`;
+  document.getElementById(expenseElemId).remove();
+}
+
+
+// async function updateExpense(e, expenseid) {
+//   e.preventDefault();
+
+//   const expenseDetails = {
+//     expenseamount: e.target.expenseamount.value,
+//     description: e.target.description.value,
+//     category: e.target.category.value,
+//   };
+
+//   try {
+//     const response = await axios.put(`http://localhost:3000/expenses/updateexpense/${expenseid}`, expenseDetails);
+//     updateExpenseInUI(response.data.expense);
+//   } catch (err) {
+//     showError(err);
+//   }
+// }
+
+// function updateExpenseInUI(expense) {
+//   const expenseElemId = `expense-${expense.id}`;
+//   const expenseElem = document.getElementById(expenseElemId);
+//   if (expenseElem) {
+//     const expenseDetailsElem = expenseElem.querySelector('td:nth-child(1)');
+//     const descriptionElem = expenseElem.querySelector('td:nth-child(2)');
+//     const categoryElem = expenseElem.querySelector('td:nth-child(3)');
+
+//     expenseDetailsElem.textContent = expense.expenseamount;
+//     descriptionElem.textContent = expense.description;
+//     categoryElem.textContent = expense.category;
+//   }
+// }
