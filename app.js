@@ -2,6 +2,7 @@ const path = require('path');
 const express = require('express');
 const cors = require('cors');
 const sequelize = require('./util/db');
+const dotenv = require('dotenv');
 
 const User = require('./models/userModel');
 const Expense = require('./models/expenseModel');
@@ -13,7 +14,6 @@ const expenseRoutes = require('./routes/expenseRoute')
 const purchaseRoutes = require('./routes/purchaseRoute')
 
 const app = express();
-const dotenv = require('dotenv');
 
 
 // get config vars
@@ -52,7 +52,7 @@ Expense.belongsTo(User);
 User.hasMany(Order);
 Order.belongsTo(User);
 
-sequelize.sync()
+sequelize.sync({ alter: true })
   .then(() => {
     app.listen(3000, () => {
       console.log('Server is running on port 3000');

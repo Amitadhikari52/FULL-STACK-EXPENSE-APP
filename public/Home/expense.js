@@ -21,6 +21,7 @@ async function addNewExpense(e) {
 function showPremiumuserMessage() {
   document.getElementById('rzp-button1').style.visibility = "hidden"
   document.getElementById('message').innerHTML = "You are a premium user "
+  document.getElementById('message').classList.add('premium-message');
 }
 
 function parseJwt (token) {
@@ -105,6 +106,7 @@ document.getElementById('rzp-button1').onclick = async function (e) {
          alert('You are a Premium User Now')
          document.getElementById('rzp-button1').style.visibility = "hidden"
          document.getElementById('message').innerHTML = "You are a premium user "
+         document.getElementById('message').classList.add('premium-message');
          localStorage.setItem('token', res.data.token)
          showLeaderboard()
      },
