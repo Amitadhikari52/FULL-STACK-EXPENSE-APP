@@ -12,6 +12,8 @@ const Order = require('./models/ordersModel');
 const userRoutes = require('./routes/userRoute'); 
 const expenseRoutes = require('./routes/expenseRoute')
 const purchaseRoutes = require('./routes/purchaseRoute')
+const premiumFeatureRoutes = require('./routes/premiumRoute')
+
 
 const app = express();
 
@@ -25,7 +27,8 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/user', userRoutes);
 app.use('/expenses', expenseRoutes);
-app.use('/purchase', purchaseRoutes)
+app.use('/purchase', purchaseRoutes);
+app.use('/premium', premiumFeatureRoutes);
 
 
 //public\Login\login.html

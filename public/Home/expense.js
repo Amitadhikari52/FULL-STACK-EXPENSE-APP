@@ -41,7 +41,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   const ispremiumuser = decodeToken.ispremiumuser
   if(ispremiumuser){
       showPremiumuserMessage()
-      // showLeaderboard()
+      showLeaderboard()
   try {
     const response = await axios.get('http://localhost:3000/expenses/getexpenses', { headers: { Authorization: token } });
     response.data.expenses.forEach((expense) => {
@@ -80,6 +80,25 @@ async function deleteExpense(e, expenseid) {
 }
 function showError(err) {
   console.error(err);
+}
+
+function showLeaderboard(){
+  const inputElement = document.createElement("input")
+  inputElement.type = "button"
+  inputElement.value = 'Show Leaderboard'
+  inputElement.onclick = async() => {
+      const token = localStorage.getItem('token')
+      const userLeaderBoardArray = await axios.get('http://localhost:3000/premium/showLeaderBoard', { headers: {"Authorization" : token} })
+      console.log(userLeaderBoardArray)
+
+      var leaderboardElem = document.getElementById('leaderboard')
+      leaderboardElem.innerHTML += '<h1> Leader Board </<h1>'
+      userLeaderBoardArray.data.forEach((userDetails) => {
+          leaderboardElem.innerHTML += `<li>Name - ${userDetails.name} Total Expense - ${userDetails.total_cost || 0} </li>`
+      })
+  }
+  document.getElementById("message").appendChild(inputElement);
+
 }
 
 function removeExpensefromUI(expenseid) {
