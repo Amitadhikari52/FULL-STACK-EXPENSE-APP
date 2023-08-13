@@ -13,6 +13,8 @@
         <h1 class="text-center mb-4">Expense Tracker</h1>
 
         <div id="message"></div> 
+
+        <button id="rzp-button1" class="btn btn-primary premium-button">Buy Premium</button>
         
         <form onsubmit="addNewExpense(event)" class="mb-4">
             <div class="form-group">
@@ -30,19 +32,17 @@
                     <option value="fuel">Fuel</option>
                     <option value="food">Food</option>
                     <option value="utilities">Utilities</option>
-                    <option value="movie">Movie</option>
-                    <option value="entertainment">Entertainment </option>
                     <option value="housing">Housing</option>
-                    <option value="gadgets">Gadgets</option>
-                    <option value="furniture">Furniture</option>
-                    <option value="others">Others</option>
-                  </select>
+                    <option value="entertainment">Entertainment</option>
+                    <option value="movie">Movie</option>
+                    <option value="education">Education</option>
+
+                    
+                    <!-- Add more options if needed -->
                 </select>
             </div>
             <button class="btn btn-primary">Add Expense</button>
         </form>
-        <button id="rzp-button1">Buy Premium</button>
-        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
         <h2 class="mt-4">Expenses</h2>
         <table class="table table-striped">
@@ -61,7 +61,8 @@
         </table>
     </div>
 
-    <script src="../Home/expense.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script src="../Home/expense.js"></script>
 </body>
 </html>
