@@ -13,6 +13,14 @@ async function addNewExpense(e) {
     const response = await axios.post('http://localhost:3000/expenses/addexpense', expenseDetails, {
       headers: { Authorization: token },
     });
+
+    // Update total expense for the user
+    const newExpenseAmount = parseFloat(expenseDetails.expenseamount);
+    await User.increment('total_expense', {
+      by: newExpenseAmount,
+      where: { id: userId },
+    });
+
     addNewExpensetoUI(response.data.expense);
   } catch (err) {
     showError(err);
@@ -85,6 +93,17 @@ async function deleteExpense(e, expenseid) {
     await axios.delete(`http://localhost:3000/expenses/deleteexpense/${expenseid}`, {
       headers: { Authorization: token },
     });
+
+    // Update total expense for the user
+    const deletedExpense = await Expense.findByPk(expenseid);
+    if (deletedExpense) {
+      const deletedExpenseAmount = parseFloat(deletedExpense.expenseamount);
+      await User.decrement('total_expense', {
+        by: deletedExpenseAmount,
+        where: { id: userId },
+      });
+    }
+
     removeExpensefromUI(expenseid);
   } catch (err) {
     showError(err);
@@ -109,7 +128,6 @@ async function showLeaderboard() {
     // Adding h2 heading with different color
     var headingElem = document.createElement('h2');
     headingElem.textContent = 'Leader Board';
-    // headingElem.style.color = '#1976d2'; // You can set your desired color here
     leaderboardElem.appendChild(headingElem);
 
     // Creating the leaderboard table
@@ -151,35 +169,35 @@ function removeExpensefromUI(expenseid) {
 
 document.getElementById('rzp-button1').onclick = async function (e) {
   const token = localStorage.getItem('token')
-  const response  = await axios.get('http://localhost:3000/purchase/premiummembership', { headers: {"Authorization" : token} });
+  const response = await axios.get('http://localhost:3000/purchase/premiummembership', { headers: { "Authorization": token } });
   console.log(response);
   var options =
   {
-   "key": response.data.key_id, // Enter the Key ID generated from the Dashboard
-   "order_id": response.data.order.id,// For one time payment
-   // This handler function will handle the success payment
-   "handler": async function (response) {
-      const res = await axios.post('http://localhost:3000/purchase/updatetransactionstatus',{
-           order_id: options.order_id,
-           payment_id: response.razorpay_payment_id,
-       }, { headers: {"Authorization" : token} })
-      
-      console.log(res)
-       alert('You are a Premium User Now')
-       document.getElementById('rzp-button1').style.visibility = "hidden"
-       document.getElementById('message').innerHTML = "You are a premium user "
-       localStorage.setItem('token', res.data.token)
-       showLeaderboard()
-   },
-};
-const rzp1 = new Razorpay(options);
-rzp1.open();
-e.preventDefault();
+    "key": response.data.key_id, // Enter the Key ID generated from the Dashboard
+    "order_id": response.data.order.id,// For one time payment
+    // This handler function will handle the success payment
+    "handler": async function (response) {
+      const res = await axios.post('http://localhost:3000/purchase/updatetransactionstatus', {
+        order_id: options.order_id,
+        payment_id: response.razorpay_payment_id,
+      }, { headers: { "Authorization": token } })
 
-rzp1.on('payment.failed', function (response){
-  console.log(response)
-  alert('Something went wrong')
-});
+      console.log(res)
+      alert('You are a Premium User Now')
+      document.getElementById('rzp-button1').style.visibility = "hidden"
+      document.getElementById('message').innerHTML = "You are a premium user "
+      localStorage.setItem('token', res.data.token)
+      showLeaderboard()
+    },
+  };
+  const rzp1 = new Razorpay(options);
+  rzp1.open();
+  e.preventDefault();
+
+  rzp1.on('payment.failed', function (response) {
+    console.log(response)
+    alert('Something went wrong')
+  });
 }
 
 document.getElementById('showLeaderboardBtn').addEventListener('click', () => {
