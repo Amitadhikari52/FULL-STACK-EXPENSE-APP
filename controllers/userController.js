@@ -24,8 +24,8 @@ const signup = async (req, res) => {
   }
 };
 
-const generateAccessToken = (id, name) => {
-  return jwt.sign({ userId : id, name: name} ,'secretkey');
+const generateAccessToken = (id, name, ispremiumuser) => {
+  return jwt.sign({ userId : id, name: name, ispremiumuser} ,'secretkey');
 }
 
 const login = async (req, res) => {
@@ -39,17 +39,17 @@ const login = async (req, res) => {
     if (!user) {
       return res.status(404).json({ success: false, message: 'User does not exist.' });
     }
-
+ 
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (passwordMatch) {
-      const token = generateAccessToken(user.id, user.name); // Use user.id here
+      const token = generateAccessToken(user.id, user.name, user.ispremiumuser); // Use user.id here
       res.status(200).json({ success: true, message: 'User logged in successfully.', token });
     } else {
       res.status(400).json({ success: false, message: 'Password is incorrect.' });
     }
   } catch (err) {
     console.error('Error during login:', err);
-    res.status(500).json({ message: err, success: false });
+    res.status(500).json({ message: err.message, success: false });
   }
 };
 
