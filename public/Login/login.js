@@ -24,3 +24,34 @@ async function login(e) {
     }
 }
 
+
+// Show the forgot password modal when the button is clicked
+document.getElementById('forgotPasswordBtn').addEventListener('click', function () {
+    $('#forgotPasswordModal').modal('show');
+  });
+  
+  // Handle the form submission
+  document.getElementById('forgotPasswordForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+  
+    const email = document.getElementById('email').value;
+  
+    try {
+      // Replace the URL with the actual backend route
+      const response = await axios.post('http://localhost:3000/password/forgotpassword', { email });
+  
+      // Display a success message to the user
+      alert('Password reset email sent! Check your inbox.');
+  
+      // Hide the modal
+      $('#forgotPasswordModal').modal('hide');
+    } catch (error) {
+      // Display an error message if something goes wrong
+      alert('Failed to send password reset email.');
+      console.error(error);
+    }
+  });
+  
+  
+  
+

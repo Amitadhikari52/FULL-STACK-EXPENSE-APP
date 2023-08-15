@@ -3,11 +3,10 @@
 /* ... Rest of your existing CSS */
 
 body {
-  background: linear-gradient(135deg, lightgreen, cyan);
+  /* background: linear-gradient(135deg, lightgreen, cyan); */
+  background: linear-gradient(135deg, #141e30, #243b55);
   font-family: Verdana, Geneva, sans-serif;
-
 }
-
 
 .container {
     /* ... Rest of your existing container styles */
@@ -121,6 +120,7 @@ footer a {
     color: #3c97bf;
     text-decoration: none;
 }
+
 .container.active {
     transform: translateX(-100%);
 }
