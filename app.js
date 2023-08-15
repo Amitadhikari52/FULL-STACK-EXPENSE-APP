@@ -4,17 +4,20 @@ const cors = require('cors');
 const sequelize = require('./util/db');
 const dotenv = require('dotenv');
 
+// const helmet =require('helmet');
+// const morgan = require('morgan');
+
 const User = require('./models/userModel');
 const Expense = require('./models/expenseModel');
 const Order = require('./models/ordersModel');
+const Forgotpassword = require('./models/forgotpasswordModel');
 
 
 const userRoutes = require('./routes/userRoute'); 
 const expenseRoutes = require('./routes/expenseRoute')
 const purchaseRoutes = require('./routes/purchaseRoute')
 const premiumFeatureRoutes = require('./routes/premiumRoute')
-
-
+const forgetPasswordRoutes = require('./routes/forgetPasswordRoute');
 const app = express();
 
 
@@ -24,11 +27,15 @@ dotenv.config();
 app.use(cors());
 app.use(express.json());
 
+// app.use(helmet());
+// app.use(morgan('combined',{stream:accessLogstream}))
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/user', userRoutes);
 app.use('/expenses', expenseRoutes);
 app.use('/purchase', purchaseRoutes);
 app.use('/premium', premiumFeatureRoutes);
+app.use('/password',forgetPasswordRoutes);
 
 
 //public\Login\login.html
@@ -54,6 +61,9 @@ Expense.belongsTo(User);
 
 User.hasMany(Order);
 Order.belongsTo(User);
+
+User.hasMany(Forgotpassword);
+Forgotpassword.belongsTo(User);
 
 sequelize.sync({ alter: true })
   .then(() => {
