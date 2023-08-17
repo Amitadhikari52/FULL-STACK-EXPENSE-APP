@@ -37,11 +37,32 @@ body {
 }
 
 /* Style for the "Buy Premium" button */
+
+.btn i {
+  font-size: 20px; /* Adjust the size as needed */
+  margin-right: 5px; /* Add spacing between icon and button text */
+}
+
 .premium-button {
   position: absolute;
   top: 10px;
   right: 10px;
+  animation: pulse 2s infinite;
 }
+
+@keyframes pulse {
+  0% {
+      transform: scale(1);
+  }
+  50% {
+      transform: scale(1.05);
+  }
+  100% {
+      transform: scale(1);
+  }
+}
+
+
 
 .premium-message {
   color: #e21de2;
@@ -113,42 +134,60 @@ body {
 /* Apply animation to the button */
 #showLeaderboardBtn {
     animation: slideIn 0.5s ease-in-out;
+    animation: pulse 2s infinite;
 }
+/* Styles for the "Go to Dashboard" button */
+.dashboard-button {
+  background-color: #1e88e5; /* Set the background color */
+  /* animation: pulse 2s infinite; Apply the same animation as the "Show Leaderboard" button */
+}
+
+/* Animation keyframes for the pulse effect */
+@keyframes pulse {
+  0% {
+      transform: scale(1);
+  }
+  50% {
+      transform: scale(1.05);
+  }
+  100% {
+      transform: scale(1);
+  }
+}
+
 
 /* Other styles for the navbar (optional) */
 .navbar {
-    background-color: #fff; /* White background */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: #f8f9fa;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
 }
 
-.navbar-brand {
-    color: #333; /* Dark gray text color */
-    font-weight: bold;
-    transition: color 0.3s ease-in-out;
+/* Styles for buttons under navigation bar */
+.navbar-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 70px; /* Adjust the margin as needed */
+  padding: 20px 0;
 }
 
-.navbar-brand:hover {
-    color: #42a5f5; /* Blue color on hover */
+/* Rest of your styles go here */
+
+/* Media query for adjusting the margin-top on smaller screens */
+@media (max-width: 768px) {
+  .navbar-buttons {
+      margin-top: 120px; /* Adjust the margin for smaller screens */
+  }
 }
-
-
-
-/* Other styles for the navbar (optional) */
-.navbar {
-  background-color: #fff; /* White background */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.navbar-brand {
-  color: #333; /* Dark gray text color */
-  font-weight: bold;
-  transition: color 0.3s ease-in-out;
-}
-
-.navbar-brand:hover {
-  color: #42a5f5; /* Blue color on hover */
-}
-
 #leaderboard {
   list-style: none;
   padding: 0;
@@ -158,6 +197,8 @@ body {
   display: none; /* Initially hide the button */
   z-index: 1000; /* Ensure the button appears above other content */
 }
+
+
 
 #leaderboard h2 {
   color: #c924c0;
