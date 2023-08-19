@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Premium User Dashboard</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <div class="dashboard">
+    <div class="summary">
+      <h2>Overall Summary</h2>
+      <p>Total Expenses: <span id="totalExpenses"></span></p>
+      <p>Total Income: <span id="totalIncome"></span></p>
+    </div>
+    <div class="daily">
+      <h2>Daily Expenses</h2>
+      <select id="dailyDateSelect">
+        <!-- Populate options with date range -->
+      </select>
+      <ul id="dailyExpensesList"></ul>
+    </div>
+    <div class="weekly">
+      <h2>Weekly Expenses</h2>
+      <select id="weeklyDateSelect">
+        <!-- Populate options with date range -->
+      </select>
+      <ul id="weeklyExpensesList"></ul>
+    </div>
+    <div class="monthly">
+      <h2>Monthly Expenses</h2>
+      <select id="monthlyDateSelect">
+        <!-- Populate options with date range -->
+      </select>
+      <ul id="monthlyExpensesList"></ul>
+    </div>
+    <div class="download">
+      <!-- <button id="downloadButton" disabled>Download Expenses</button> -->
+      <button id="downloadButton" onclick="downloadReport()">Download Expenses Report</button>
+    </div>
+  </div>
+  <script src="../Home/expense.js"></script>
+</body>
+</html>
