@@ -185,3 +185,37 @@ rzp1.on('payment.failed', function (response){
 document.getElementById('showLeaderboardBtn').addEventListener('click', () => {
   showLeaderboard();
 });
+
+async function showExpensesByTimeRange(timeRange) {
+  const token = localStorage.getItem('token');
+
+  try {
+    const response = await axios.get(`http://localhost:3000/expenses/getexpenses/${timeRange}`, {
+      headers: { Authorization: token },
+    });
+
+    const expensesList = response.data.expenses;
+    const targetList = document.getElementById(`${timeRange}ExpensesList`);
+    targetList.innerHTML = ''; // Clear existing content
+
+    expensesList.forEach((expense) => {
+      const expenseElem = document.createElement('li');
+      expenseElem.textContent = `${expense.expenseamount} - ${expense.description} - ${expense.createdAt}`;
+      targetList.appendChild(expenseElem);
+    });
+  } catch (error) {
+    showError(error);
+  }
+}
+
+document.getElementById('dailyDateSelect').addEventListener('change', (event) => {
+  showExpensesByTimeRange(event.target.value);
+});
+
+document.getElementById('weeklyDateSelect').addEventListener('change', (event) => {
+  showExpensesByTimeRange(event.target.value);
+});
+
+document.getElementById('monthlyDateSelect').addEventListener('change', (event) => {
+  showExpensesByTimeRange(event.target.value);
+});
