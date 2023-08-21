@@ -67,7 +67,7 @@ Forgotpassword.belongsTo(User);
 
 
 // Start server after syncing with database
-sequelize.sync()
+sequelize.sync({ alter: false })
   .then(() => {
     app.listen(3000, () => {
       console.log('Server is running on port 3000');
@@ -76,3 +76,4 @@ sequelize.sync()
   .catch(err => {
     console.error('Database synchronization error:', err);
   });
+
