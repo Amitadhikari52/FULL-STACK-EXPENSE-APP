@@ -1,32 +1,56 @@
 const Expense = require('../models/expenseModel');
 const User = require('../models/userModel');
 const sequelize = require('../util/db');
+const UserServices = require('../services/userservices')
+const S3Service = require('../services/S3services')
 
+
+const downloadexpense = async (req, res) => {
+  try {
+    const expenses = await UserServices.getExpenses(req);
+    console.log(expenses);
+    const stringifiedExpenses = JSON.stringify(expenses);
+
+    //it should depend upon userId 
+    const userId = req.user.id;
+
+    // const filename = 'Expense.txt';
+    const filename = `Expense${userId}/${new Date()}.txt`;
+    const fileURl = await S3Service.uploadToS3(stringifiedExpenses, filename);
+    console.log(fileURl);
+    res.status(200).json({ fileURl, success: true })
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({fileURl: '', success:false, err : err})
+
+  }
+
+}
 
 const addexpense = async (req, res) => {
   const t = await sequelize.transaction();
   const { expenseamount, description, category } = req.body;
 
   if (expenseamount == undefined || expenseamount.length === 0) {
-      return res.status(400).json({ success: false, message: 'Expense amount is missing' });
+    return res.status(400).json({ success: false, message: 'Expense amount is missing' });
   }
 
   try {
-      const expense = await Expense.create({ expenseamount, description, category, userId: req.user.id }, { transaction: t });
-      const totalExpense = Number(req.user.totalExpenses) + Number(expenseamount);
+    const expense = await Expense.create({ expenseamount, description, category, userId: req.user.id }, { transaction: t });
+    const totalExpense = Number(req.user.totalExpenses) + Number(expenseamount);
 
-      await User.update({
-          totalExpenses: totalExpense
-      }, {
-          where: { id: req.user.id },
-          transaction: t
-      });
+    await User.update({
+      totalExpenses: totalExpense
+    }, {
+      where: { id: req.user.id },
+      transaction: t
+    });
 
-      await t.commit();
-      res.status(200).json({ expense: expense });
+    await t.commit();
+    res.status(200).json({ expense: expense });
   } catch (err) {
-      await t.rollback();
-      return res.status(500).json({ success: false, error: err });
+    await t.rollback();
+    return res.status(500).json({ success: false, error: err });
   }
 };
 
@@ -81,7 +105,6 @@ const deleteexpense = async (req, res) => {
 };
 
 
-
 // const updateexpense = async (req, res) => {
 //   const expenseid = req.params.expenseid;
 //   const { expenseamount, description, category } = req.body;
@@ -111,5 +134,6 @@ module.exports = {
   deleteexpense,
   getexpenses,
   addexpense,
+  downloadexpense
   // updateexpense, 
 };

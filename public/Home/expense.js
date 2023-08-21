@@ -186,36 +186,23 @@ document.getElementById('showLeaderboardBtn').addEventListener('click', () => {
   showLeaderboard();
 });
 
-async function showExpensesByTimeRange(timeRange) {
+
+async function download() {
   const token = localStorage.getItem('token');
-
   try {
-    const response = await axios.get(`http://localhost:3000/expenses/getexpenses/${timeRange}`, {
-      headers: { Authorization: token },
-    });
-
-    const expensesList = response.data.expenses;
-    const targetList = document.getElementById(`${timeRange}ExpensesList`);
-    targetList.innerHTML = ''; // Clear existing content
-
-    expensesList.forEach((expense) => {
-      const expenseElem = document.createElement('li');
-      expenseElem.textContent = `${expense.expenseamount} - ${expense.description} - ${expense.createdAt}`;
-      targetList.appendChild(expenseElem);
-    });
-  } catch (error) {
-    showError(error);
+      const response = await axios.get('http://localhost:3000/user/download', { headers: {"Authorization" : token} });
+      if (response.status === 200) {
+        // the backend is essentially sending a download link
+        // which if we open in browser, the file would download
+          var a = document.createElement("a");
+          a.href = response.data.fileURl;
+          a.download = 'myexpense.csv';
+          a.click();
+      } else {
+          throw new Error(response.data.message);
+      }
+  } catch (err) {
+      showError(err);
   }
 }
 
-document.getElementById('dailyDateSelect').addEventListener('change', (event) => {
-  showExpensesByTimeRange(event.target.value);
-});
-
-document.getElementById('weeklyDateSelect').addEventListener('change', (event) => {
-  showExpensesByTimeRange(event.target.value);
-});
-
-document.getElementById('monthlyDateSelect').addEventListener('change', (event) => {
-  showExpensesByTimeRange(event.target.value);
-});
