@@ -5,28 +5,6 @@ const UserServices = require('../services/userservices')
 const S3Service = require('../services/S3services')
 
 
-const downloadexpense = async (req, res) => {
-  try {
-    const expenses = await UserServices.getExpenses(req);
-    console.log(expenses);
-    const stringifiedExpenses = JSON.stringify(expenses);
-
-    //it should depend upon userId 
-    const userId = req.user.id;
-
-    // const filename = 'Expense.txt';
-    const filename = `Expense${userId}/${new Date()}.txt`;
-    const fileURl = await S3Service.uploadToS3(stringifiedExpenses, filename);
-    console.log(fileURl);
-    res.status(200).json({ fileURl, success: true })
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({fileURl: '', success:false, err : err})
-
-  }
-
-}
-
 const addexpense = async (req, res) => {
   const t = await sequelize.transaction();
   const { expenseamount, description, category } = req.body;
@@ -105,35 +83,34 @@ const deleteexpense = async (req, res) => {
 };
 
 
-// const updateexpense = async (req, res) => {
-//   const expenseid = req.params.expenseid;
-//   const { expenseamount, description, category } = req.body;
+const updateexpense = async (req, res) => {
+  const expenseid = req.params.expenseid;
+  const { expenseamount, description, category } = req.body;
 
-//   if (!expenseamount) {
-//     return res.status(400).json({ success: false, message: 'Expense amount is missing' });
-//   }
+  if (!expenseamount) {
+    return res.status(400).json({ success: false, message: 'Expense amount is missing' });
+  }
 
-//   try {
-//     const expense = await Expense.findByPk(expenseid);
-//     if (!expense) {
-//       return res.status(404).json({ success: false, message: 'Expense not found' });
-//     }
+  try {
+    const expense = await Expense.findByPk(expenseid);
+    if (!expense) {
+      return res.status(404).json({ success: false, message: 'Expense not found' });
+    }
 
-//     expense.expenseamount = expenseamount;
-//     expense.description = description;
-//     expense.category = category;
-//     await expense.save();
+    expense.expenseamount = expenseamount;
+    expense.description = description;
+    expense.category = category;
+    await expense.save();
 
-//     return res.status(200).json({ expense, success: true });
-//   } catch (err) {
-//     return res.status(500).json({ success: false, error: err });
-//   }
-// };
+    return res.status(200).json({ expense, success: true });
+  } catch (err) {
+    return res.status(500).json({ success: false, error: err });
+  }
+};
 
 module.exports = {
   deleteexpense,
   getexpenses,
   addexpense,
-  downloadexpense
-  // updateexpense, 
+  updateexpense,
 };
