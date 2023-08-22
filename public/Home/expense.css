@@ -43,25 +43,16 @@ body {
   margin-right: 5px; /* Add spacing between icon and button text */
 }
 
-.premium-button {
+#rzp-button1 {
   position: absolute;
   top: 10px;
   right: 10px;
-  animation: pulse 2s infinite;
 }
 
-@keyframes pulse {
-  0% {
-      transform: scale(1);
-  }
-  50% {
-      transform: scale(1.05);
-  }
-  100% {
-      transform: scale(1);
-  }
+#rzp-button1 {
+  background-color: rgb(0, 140, 255); 
+  
 }
-
 
 
 .premium-message {
@@ -138,8 +129,11 @@ body {
 }
 /* Styles for the "Go to Dashboard" button */
 .dashboard-button {
-  background-color: #1e88e5; /* Set the background color */
-  /* animation: pulse 2s infinite; Apply the same animation as the "Show Leaderboard" button */
+  background-color: orangered;
+}
+
+.dashboard-button:hover{
+  background-color: #00ff00;
 }
 
 /* Animation keyframes for the pulse effect */
@@ -176,15 +170,16 @@ body {
 }
 
 /* Apply neon glow animation to the "Download File" button */
-#downloadexpense:hover {
+#download-expenses-button:hover {
     animation: neon-glow 1s infinite alternate;
 }
 
 
 
 /* Additional style for the "Download File" button */
-#downloadexpense {
+#download-expenses-button {
   background-color: #c924c0;
+  /* background-color:  #00ff00; */
   border: none;
   color: #fff; /* White text color */
   border-radius: 5px;
@@ -194,12 +189,12 @@ body {
   transition: background-color 0.3s ease-in-out;
 
 }
-#downloadexpense {
+#download-expenses-button {
   animation: slideIn 0.5s ease-in-out;
   animation: pulse 2s infinite;
 }
 
-#downloadexpense:hover {
+#download-expenses-button:hover {
   background-color: #0056b3;
 }
 @keyframes slideIn {
@@ -214,9 +209,83 @@ body {
 }
 
 
+#show-old-downloads-button {
+  background-color: #c924c0;
+  /* background-color:  #00ff00; */
+  border: none;
+  color: #fff; /* White text color */
+  border-radius: 5px;
+  padding: 8px 15px;
+  margin-right: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+
+}
+#show-old-downloads-button{
+  animation: slideIn 0.5s ease-in-out;
+  animation: pulse 2s infinite;
+}
+
+#show-old-downloads-button:hover {
+  background-color: #0056b3;
+  animation: neon-glow 1s infinite alternate;
+}
+
+@keyframes slideIn {
+  from {
+      transform: translateX(100%);
+      opacity: 0;
+  }
+  to {
+      transform: translateX(0);
+      opacity: 1;
+  }
+}
+
+
+#Reportbutton {
+  background-color: #c924c0;
+  /* background-color:  #00ff00; */
+  border: none;
+  color: #fff; /* White text color */
+  border-radius: 5px;
+  padding: 8px 15px;
+  margin-right: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+
+}
+#Reportbutton{
+  animation: slideIn 0.5s ease-in-out;
+  animation: pulse 2s infinite;
+}
+
+#Reportbutton:hover {
+  background-color: #0056b3;
+  animation: neon-glow 1s infinite alternate;
+}
+
+@keyframes slideIn {
+  from {
+      transform: translateX(100%);
+      opacity: 0;
+  }
+  to {
+      transform: translateX(0);
+      opacity: 1;
+  }
+}
+
+
 /* Other styles for the navbar (optional) */
+/* Style for the top menu navbar */
+
+.navbar-brand {
+  color: #00ff00;
+  font-weight: bold;
+}
 .navbar {
-  background-color: #f8f9fa;
+  background-color: black; /* Change background color to black */
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: center;
@@ -236,7 +305,10 @@ body {
   align-items: center;
   margin-top: 70px; /* Adjust the margin as needed */
   padding: 20px 0;
+  background-color: black; /* Set background color to match navbar */
 }
+
+/* Rest of your existing styles */
 
 /* Rest of your styles go here */
 
@@ -260,6 +332,7 @@ body {
 
 #leaderboard h2 {
   color: #c924c0;
+  /* background-color:  #00ff00; */
   font-size: 20px;
   /* font-weight: bold; */
   margin-bottom: 10px;

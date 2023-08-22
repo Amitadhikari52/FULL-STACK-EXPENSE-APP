@@ -9,6 +9,7 @@ const User = require('./models/userModel');
 const Expense = require('./models/expenseModel');
 const Order = require('./models/ordersModel');
 const Forgotpassword = require('./models/forgotpasswordModel');
+const Downloads = require('./models/downloadedReportsModel');
 
 
 const userRoutes = require('./routes/userRoute'); 
@@ -64,6 +65,10 @@ Order.belongsTo(User);
 
 User.hasMany(Forgotpassword);
 Forgotpassword.belongsTo(User);
+
+User.hasMany(Downloads);
+Downloads.belongsTo(User);
+
 
 
 // Start server after syncing with database

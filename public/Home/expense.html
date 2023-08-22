@@ -8,10 +8,14 @@
     <title>Expense Tracker</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="../Home/expense.css">
-</head>
+
+    <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg ">
         <a class="navbar-brand" href="#">Expense Tracker</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -20,42 +24,58 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <button id="showLeaderboardBtn" class="btn btn-primary navbar-btn">Show Leaderboard</button>
+                    <button id="showLeaderboardBtn" class="btn btn-primary navbar-btn">
+                        <i class="fas fa-trophy" style="color: goldenrod;"></i> Show Leaderboard
+                    </button>
                 </li>
                 <li class="nav-item">
-                    <!-- <button onclick="download()"id="downloadexpense" class="btn btn-primary navbar-btn">Download File</a> -->
-                    <button onclick="download()" id="downloadexpense">Download File</button>
+                    <a href="../ReportGeneration/report.html"><button id="Reportbutton" class="btn btn-primary">
+                            <i class="fas fa-file-alt" style="color:goldenrod;"></i> Report
+                        </button></a>
+                    <button type="button" class="btn btn-primary" id="download-expenses-button">
+                        <i class="fas fa-download" style="color: goldenrod;"></i> Download Expenses
+                    </button>
+                    <button type="button" class="btn btn-primary" id="show-old-downloads-button">
+                        <i class="fas fa-history" style="color: goldenrod;"></i> Previous Downloads
+                    </button>
                 </li>
                 <li class="nav-item">
-                    <a href="/" id="dashboard-button" class="btn btn-primary navbar-btn dashboard-button">Go to
-                        Dashboard</a>
+                    <a href="/" id="dashboard-button" class="btn btn-primary navbar-btn dashboard-button">
+                        <i class="fas fa-home"></i> Home </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/" id="dashboard-button" class="btn btn-primary navbar-btn dashboard-button">
+                        <i class="fas fa-sign-out-alt"></i> Log Out
+                    </a>
                 </li>
                 <!-- Add other navigation items here if needed -->
             </ul>
         </div>
     </nav>
 
-
     <div class="container mt-5">
-        <h1 class="text-center mb-4">Expense Tracker</h1>
+        <h1 class="text-center mb-4">EXPENSE TRACKER </h1>
 
         <div id="message"></div>
 
+        <!-- Button to buy premium -->
         <button id="rzp-button1" class="btn btn-primary premium-button">
-            <i class="fas fa-crown"></i> Buy Premium
+            <i class="fas fa-crown" style="color: goldenrod;"></i> Buy Premium
         </button>
 
-        <!-- <button onclick="download()" id="downloadexpense">Download File</button> -->
-
+        <!-- Form to add new expense -->
         <form onsubmit="addNewExpense(event)" class="mb-4">
+            <!-- Expense Amount -->
             <div class="form-group">
                 <label for="expenseamount">Expense Amount:</label>
                 <input type="number" class="form-control" name="expenseamount" required>
             </div>
+            <!-- Description -->
             <div class="form-group">
                 <label for="description">Description:</label>
                 <input type="text" class="form-control" name="description" required>
             </div>
+            <!-- Category -->
             <div class="form-group">
                 <label for="category">Category:</label>
                 <select class="form-control" id="category" name="category">
@@ -70,14 +90,15 @@
                     <!-- Add more options if needed -->
                 </select>
             </div>
+            <!-- Add Expense Button -->
             <button class="btn btn-primary">Add Expense</button>
         </form>
 
         <!-- Leaderboard button -->
-        <button id="showLeaderboardBtn" class="btn btn-primary" style="position: fixed; top: 20px; right: 20px;">
-            <i class="fas fa-trophy"></i> Show Leaderboard
-        </button>
+        <button id="showLeaderboardBtn" class="btn btn-primary" style="position: fixed; top: 20px; right: 20px;">Show
+            Leaderboard</button>
 
+        <!-- Expenses Table -->
         <h2 class="mt-4">Expenses</h2>
         <table class="table table-striped">
             <thead>
@@ -90,17 +111,28 @@
                 </tr>
             </thead>
             <tbody id="listOfExpenses">
-                <!-- Expenses will be added here -->
+                <!-- Expenses will be added here dynamically -->
             </tbody>
         </table>
 
+        <!-- Pagination controls -->
+        <div class="pagination">
+            <button id="prevPageBtn" class="btn btn-primary">Previous</button>
+            <span id="currentPage">1</span>
+            <button id="nextPageBtn" class="btn btn-primary">Next</button>
+        </div>
+
         <!-- Leaderboard section -->
         <div id="leaderboard"></div>
+
+        <!-- Previous Downloads section -->
+        <div id="previous-downloads"></div>
     </div>
 
-
+    <!-- Razorpay and Axios scripts -->
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <!-- Your custom JavaScript -->
     <script src="../Home/expense.js"></script>
 </body>
 

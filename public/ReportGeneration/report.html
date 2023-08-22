@@ -1,45 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Premium User Dashboard</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <link rel="stylesheet" href="../style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Premium User Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./report.css">
 </head>
 <body>
-  <div class="dashboard">
-    <div class="summary">
-      <h2>Overall Summary</h2>
-      <p>Total Expenses: <span id="totalExpenses"></span></p>
-      <p>Total Income: <span id="totalIncome"></span></p>
+    <div class="dashboard">
+        <h1>Premium User Dashboard</h1>
+        
+        <!-- Display Overall Summary -->
+        <div class="summary">
+            <h2>Overall Summary</h2>
+            <p>Total Expenses: <span id="totalExpenses"></span></p>
+            <p>Total Income: <span id="totalIncome"></span></p>
+        </div>
+        
+        <!-- Daily Expenses -->
+        <div class="daily">
+            <h2>Daily Expenses</h2>
+            <select id="dailyDateSelect">
+                <!-- Populate options with date range -->
+            </select>
+            <ul id="dailyExpensesList"></ul>
+        </div>
+        
+        <!-- Weekly Expenses -->
+        <div class="weekly">
+            <h2>Weekly Expenses</h2>
+            <select id="weeklyDateSelect">
+                <!-- Populate options with date range -->
+            </select>
+            <ul id="weeklyExpensesList"></ul>
+        </div>
+        
+        <!-- Monthly Expenses -->
+        <div class="monthly">
+            <h2>Monthly Expenses</h2>
+            <select id="monthlyDateSelect">
+                <!-- Populate options with date range -->
+            </select>
+            <ul id="monthlyExpensesList"></ul>
+        </div>
+        
+        <!-- Download Expenses Report Button (Enabled for Premium Users) -->
+        <div class="download">
+            <button id="downloadButton" onclick="downloadReport()" disabled>Download Expenses Report</button>
+        </div>
     </div>
-    <div class="daily">
-      <h2>Daily Expenses</h2>
-      <select id="dailyDateSelect">
-        <!-- Populate options with date range -->
-      </select>
-      <ul id="dailyExpensesList"></ul>
-    </div>
-    <div class="weekly">
-      <h2>Weekly Expenses</h2>
-      <select id="weeklyDateSelect">
-        <!-- Populate options with date range -->
-      </select>
-      <ul id="weeklyExpensesList"></ul>
-    </div>
-    <div class="monthly">
-      <h2>Monthly Expenses</h2>
-      <select id="monthlyDateSelect">
-        <!-- Populate options with date range -->
-      </select>
-      <ul id="monthlyExpensesList"></ul>
-    </div>
-    <div class="download">
-      <!-- <button id="downloadButton" disabled>Download Expenses</button> -->
-      <button id="downloadButton" onclick="downloadReport()">Download Expenses Report</button>
-    </div>
-  </div>
-  <script src="../Home/expense.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script src="../Home/expense.js"></script>
+    <script>
+        // Define a function to populate date range options in select elements
+        function populateDateRangeSelect(selectId, dateRanges) {
+            const select = document.getElementById(selectId);
+            for (const range of dateRanges) {
+                const option = document.createElement('option');
+                option.value = range.value;
+                option.textContent = range.label;
+                select.appendChild(option);
+            }
+        }
+        
+        // Example date ranges (you can replace these with actual date ranges)
+        const dailyDateRanges = [
+            { value: '2023-08-01', label: 'August 1, 2023' },
+            { value: '2023-08-02', label: 'August 2, 2023' },
+            // ... Add more date ranges ...
+        ];
+        
+        const weeklyDateRanges = [
+            { value: '2023-08-01', label: 'Week of August 1, 2023' },
+            { value: '2023-08-08', label: 'Week of August 8, 2023' },
+            // ... Add more date ranges ...
+        ];
+        
+        const monthlyDateRanges = [
+            { value: '2023-08', label: 'August 2023' },
+            { value: '2023-09', label: 'September 2023' },
+            // ... Add more date ranges ...
+        ];
+        
+        // Populate select elements with date ranges
+        populateDateRangeSelect('dailyDateSelect', dailyDateRanges);
+        populateDateRangeSelect('weeklyDateSelect', weeklyDateRanges);
+        populateDateRangeSelect('monthlyDateSelect', monthlyDateRanges);
+        
+        // Function to download the report
+        function downloadReport() {
+            // Implement your logic to generate and download the report here
+        }
+    </script>
 </body>
 </html>
