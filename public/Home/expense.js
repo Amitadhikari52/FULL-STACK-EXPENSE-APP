@@ -1,4 +1,5 @@
 let ispremiumuser = false;
+
 async function addNewExpense(e) {
   e.preventDefault();
 
@@ -67,11 +68,101 @@ window.addEventListener("DOMContentLoaded", async () => {
       response.data.expenses.forEach((expense) => {
         addNewExpensetoUI(expense);
       });
+
+      // Fetch and display expenses on initial page load
+      getExpense(currentPage);
     } catch (err) {
       showError(err);
     }
   }
 });
+
+let currentPage = 1; // Declare and initialize currentPage
+let expensesPerPage = 10; // Default value
+
+// Function to fetch expenses based on the current page and expenses per page
+async function getExpense(page) {
+  const count = localStorage.getItem("count");
+  document.getElementById("list").innerHTML = "";
+
+  const token = localStorage.getItem("token");
+
+  try {
+    const response = await axios.get(
+      `http://localhost:3000/get-all-expenses?page=${page}&count=${expensesPerPage}`,
+      {
+        headers: { authorization: token },
+      }
+    );
+
+    response.data.rows.forEach((element) => {
+      showExpenseOnScreen(element);
+    });
+
+    showPagination(response.data);
+  } catch (err) {
+    console.log(err);
+    displayMessage(JSON.stringify(err), false);
+  }
+}
+
+// Function to update expensesPerPage and retrieve expenses for the current page
+async function updateExpenses() {
+  expensesPerPage = parseInt(document.getElementById("expensesPerPage").value);
+  await getExpense(currentPage);
+}
+
+async function showPagination({
+  currentpage,
+  nextpage,
+  previouspage,
+  hasnextpage,
+  haspreviouspage,
+  lastpage,
+}) {
+  const pagination = document.getElementById("pagination");
+  pagination.innerHTML = "";
+
+  const prevPageBtn = document.createElement("button");
+  prevPageBtn.innerHTML = "Previous";
+  prevPageBtn.classList.add("btn", "btn-primary");
+  prevPageBtn.disabled = !haspreviouspage;
+
+  const nextPageBtn = document.createElement("button");
+  nextPageBtn.innerHTML = "Next";
+  nextPageBtn.classList.add("btn", "btn-primary");
+  nextPageBtn.disabled = !hasnextpage;
+
+  const currentPageElem = document.createElement("span");
+  currentPageElem.id = "currentPage";
+  currentPageElem.textContent = currentpage;
+
+  prevPageBtn.addEventListener("click", async () => {
+    if (haspreviouspage) {
+      currentPage--;
+      await getExpense(currentPage);
+    }
+  });
+
+  nextPageBtn.addEventListener("click", async () => {
+    if (hasnextpage) {
+      currentPage++;
+      await getExpense(currentPage);
+    }
+  });
+
+  pagination.appendChild(prevPageBtn);
+  pagination.appendChild(currentPageElem);
+  pagination.appendChild(nextPageBtn);
+}
+
+// Update the select element and fetch expenses based on the selected value
+document.getElementById("expensesPerPage").addEventListener("change", updateExpenses);
+
+// Initial call to fetch expenses based on the default expensesPerPage
+updateExpenses();
+
+
 
 function addNewExpensetoUI(expense) {
   const parentElement = document.getElementById("listOfExpenses");
@@ -321,38 +412,38 @@ document.getElementById("download-expenses-button").onclick = async (e) => {
 
 // Function to show previous downloads
 document.getElementById("show-old-downloads-button").onclick = async (e) => {
-  if (ispremiumuser) {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await axios.get(
-        "http://localhost:3000/premium/show-old-downloads",
-        {
-          headers: { Authorization: token },
-        }
-      );
+  try {
+    const token = localStorage.getItem("token");
+    const response = await axios.get(
+      "http://localhost:3000/premium/show-old-downloads",
+      {
+        headers: { Authorization: token },
+      }
+    );
 
-      if (response.status === 200) {
-        const previousDownloadsElement =
-          document.getElementById("previous-downloads");
-        // previousDownloadsElement.innerHTML = "";
+    if (response.status === 200) {
+      const previousDownloadsElement =
+        document.getElementById("previous-downloads");
+      previousDownloadsElement.innerHTML = ""; // Clear existing content
+      if (
+        response.data.prevDownloads &&
+        response.data.prevDownloads.length > 0
+      ) {
         previousDownloadsElement.innerHTML += "<h1>Previous Downloads</h1>";
 
         response.data.prevDownloads.forEach((element) => {
           previousDownloadsElement.innerHTML += `<li>${element.fileName}<button onclick="downloadFile('${element.fileURL}')">Download</button></li>`;
         });
       } else {
-        throw new Error(response.data.message);
+        previousDownloadsElement.innerHTML +=
+          "<p>No previous downloads available.</p>";
       }
-    } catch (errMsg) {
-      console.log(errMsg);
-      displayMessage("Failed to fetch previous downloads", false);
+    } else {
+      throw new Error(response.data.message);
     }
-  } else {
-    console.log("Non-premium user access");
-    displayMessage(
-      "You are not a premium user. Upgrade to access this feature.",
-      false
-    );
+  } catch (errMsg) {
+    console.log(errMsg);
+    displayMessage("Failed to fetch previous downloads", false);
   }
 };
 
@@ -375,62 +466,3 @@ function displayMessage(msg, successOrFailure) {
     errorDiv.innerHTML += `<h2 style="text-align:center; color:red; margin-top:30px;">${msg}</h2>`;
   }
 }
-
-// Pagination code
-
-let currentPage = 1;
-const expensesPerPage = 10; // Number of expenses to show per page
-
-// Function to render expenses based on the current page
-function renderExpenses(expenses) {
-  const startIndex = (currentPage - 1) * expensesPerPage;
-  const endIndex = startIndex + expensesPerPage;
-  const expensesToRender = expenses.slice(startIndex, endIndex);
-
-  // Clear the expenses table
-  const listOfExpenses = document.getElementById("listOfExpenses");
-  listOfExpenses.innerHTML = "";
-
-  // Add the expenses to the table
-  expensesToRender.forEach((expense) => {
-    addNewExpensetoUI(expense);
-  });
-
-  // Update pagination buttons
-  updatePaginationButtons(expenses.length);
-}
-
-// Function to update the pagination buttons
-function updatePaginationButtons(totalExpenses) {
-  const totalPages = Math.ceil(totalExpenses / expensesPerPage);
-  const paginationButtons = document.getElementById("pagination-buttons");
-  paginationButtons.innerHTML = "";
-
-  for (let i = 1; i <= totalPages; i++) {
-    const button = document.createElement("button");
-    button.textContent = i;
-    button.addEventListener("click", () => {
-      currentPage = i;
-      renderExpenses(expensesData); // Call renderExpenses with your data array
-    });
-    paginationButtons.appendChild(button);
-  }
-}
-
-// Update the renderExpenses call in your code to use the initial page
-window.addEventListener("DOMContentLoaded", async () => {
-  // ... Your existing code
-
-  try {
-    const response = await axios.get(
-      "http://localhost:3000/expenses/getexpenses",
-      {
-        headers: { Authorization: token },
-      }
-    );
-    expensesData = response.data.expenses; // Store expenses data in a variable
-    renderExpenses(expensesData);
-  } catch (err) {
-    showError(err);
-  }
-});
