@@ -16,7 +16,7 @@
 
 <body>
     <nav class="navbar navbar-expand-lg ">
-        <a class="navbar-brand" href="#">Expense Tracker</a>
+        <a class="navbar-brand" href="#">Expense Tracker &#8364; </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -25,7 +25,7 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <button id="showLeaderboardBtn" class="btn btn-primary navbar-btn">
-                        <i class="fas fa-trophy" style="color: goldenrod;"></i> Show Leaderboard
+                        <i class="fas fa-trophy" style="color: goldenrod;"></i> Leaderboard
                     </button>
                 </li>
                 <li class="nav-item">
@@ -44,7 +44,7 @@
                         <i class="fas fa-home"></i> Home </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/" id="dashboard-button" class="btn btn-primary navbar-btn dashboard-button">
+                    <a href="/login" id="dashboard-button" class="btn btn-primary navbar-btn dashboard-button">
                         <i class="fas fa-sign-out-alt"></i> Log Out
                     </a>
                 </li>
@@ -96,10 +96,10 @@
 
         <!-- Leaderboard button -->
         <button id="showLeaderboardBtn" class="btn btn-primary" style="position: fixed; top: 20px; right: 20px;">Show
-            Leaderboard</button>
+            LeaderBoard &#128081</button>
 
         <!-- Expenses Table -->
-        <h2 class="mt-4">Expenses</h2>
+        <h2 class="mt-4">&#8364 Expenses &#8364</h2>
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -116,8 +116,8 @@
         </table>
 
         <!-- Add a dropdown for choosing the number of expenses per page -->
-        <div>
-            <label for="expensesPerPage">Expenses per page:</label>
+        <div style="display: flex; align-items: center;">
+            <label for="expensesPerPage" style="color:#176b14; font-weight: bold; margin-right: 10px;" >Expenses per page:</label>
             <select id="expensesPerPage">
                 <option value="5">5</option>
                 <option value="8">8</option>
@@ -125,14 +125,15 @@
                 <option value="20">20</option>
                 <option value="40">40</option>
             </select>
+            
+            <div class="pagination" id="pagination" style="margin-left: auto;">
+                <button id="prevPageBtn" class="btn btn-primary">Previous</button>
+                <span id="currentPage" style="margin: 0 10px;">1</span>
+                <button id="nextPageBtn" class="btn btn-primary">Next</button>
+            </div>
         </div>
+        
 
-        <!-- Pagination controls -->
-        <div class="pagination">
-            <button id="prevPageBtn" class="btn btn-primary">Previous</button>
-            <span id="currentPage">1</span>
-            <button id="nextPageBtn" class="btn btn-primary">Next</button>
-        </div>
 
         <!-- Leaderboard section -->
         <div id="leaderboard"></div>

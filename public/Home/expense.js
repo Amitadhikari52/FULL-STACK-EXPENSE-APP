@@ -1,5 +1,6 @@
 let ispremiumuser = false;
 
+// Function to add a new expense
 async function addNewExpense(e) {
   e.preventDefault();
 
@@ -25,12 +26,14 @@ async function addNewExpense(e) {
   }
 }
 
+// Function to show premium user message
 function showPremiumuserMessage() {
   document.getElementById("rzp-button1").style.visibility = "hidden";
   document.getElementById("message").innerHTML = "You are a premium user ";
   document.getElementById("message").classList.add("premium-message");
 }
 
+// Function to parse JWT token
 function parseJwt(token) {
   var base64Url = token.split(".")[1];
   var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
@@ -47,8 +50,13 @@ function parseJwt(token) {
   return JSON.parse(jsonPayload);
 }
 
+// Event listener when the DOM is loaded
 window.addEventListener("DOMContentLoaded", async () => {
   const token = localStorage.getItem("token");
+  if (!token) {
+    window.location.href = "/login";
+    return;
+  }
   const decodeToken = parseJwt(token);
   console.log(decodeToken);
   ispremiumuser = decodeToken.ispremiumuser;
@@ -58,60 +66,77 @@ window.addEventListener("DOMContentLoaded", async () => {
     // showLeaderboard();
     document.getElementById("showLeaderboardBtn").style.display = "block"; // Show the button for premium users
 
-    try {
-      const response = await axios.get(
-        "http://localhost:3000/expenses/getexpenses",
-        {
-          headers: { Authorization: token },
-        }
-      );
-      response.data.expenses.forEach((expense) => {
-        addNewExpensetoUI(expense);
-      });
+    getExpense(1);
+    // try {
+    //   const response = await axios.get(
+    //     "http://localhost:3000/expenses/getexpenses",
+    //     {
+    //       headers: { Authorization: token },
+    //     }
+    //   );
+    //   response.data.expenses.forEach((expense) => {
+    //     addNewExpensetoUI(expense);
+    //   });
 
-      // Fetch and display expenses on initial page load
-      getExpense(currentPage);
-    } catch (err) {
-      showError(err);
-    }
+    //   // Fetch and display expenses on initial page load
+    //   //getExpense(currentPage);
+    // } catch (err) {
+    //   showError(err);
+    // }
   }
 });
 
-let currentPage = 1; // Declare and initialize currentPage
-let expensesPerPage = 10; // Default value
+// Pagination variables
+let currentPage = 1;
+let expensesPerPage = 5; // Default expenses per page
 
-// Function to fetch expenses based on the current page and expenses per page
+// Another event listener when the DOM is loaded
+window.addEventListener("DOMContentLoaded", async () => {
+  const expensesPerPageSelect = document.getElementById("expensesPerPage");
+
+  // Retrieve saved expenses per page preference from local storage
+  const savedExpensesPerPage = localStorage.getItem("expensesPerPage");
+  if (savedExpensesPerPage) {
+    expensesPerPage = parseInt(savedExpensesPerPage);
+    expensesPerPageSelect.value = savedExpensesPerPage;
+  }
+
+  // Listen for changes in the select element
+  expensesPerPageSelect.addEventListener("change", () => {
+    expensesPerPage = parseInt(expensesPerPageSelect.value);
+    localStorage.setItem("expensesPerPage", expensesPerPage);
+    getExpense(currentPage); // Call getExpense function to fetch and display expenses
+  });
+});
+
+// Function to get expenses and show pagination
 async function getExpense(page) {
-  const count = localStorage.getItem("count");
-  document.getElementById("list").innerHTML = "";
+  const count = expensesPerPage;
+  document.getElementById("listOfExpenses").innerHTML = "";
 
   const token = localStorage.getItem("token");
 
   try {
     const response = await axios.get(
-      `http://localhost:3000/get-all-expenses?page=${page}&count=${expensesPerPage}`,
+      `http://localhost:3000/expenses/getAllExpenses/${page}?count=${count}`,
       {
-        headers: { authorization: token },
+        headers: { Authorization: token },
       }
     );
 
-    response.data.rows.forEach((element) => {
-      showExpenseOnScreen(element);
+    response.data.expenses.forEach((element) => {
+      addNewExpensetoUI(element);
     });
-
     showPagination(response.data);
   } catch (err) {
-    console.log(err);
-    displayMessage(JSON.stringify(err), false);
+    // console.log(err);
+    // displayMessage(JSON.stringify(err), false);
+    console.log("Error occurred during GET request:", err);
+    displayMessage("Failed to fetch expenses", false);
   }
 }
 
-// Function to update expensesPerPage and retrieve expenses for the current page
-async function updateExpenses() {
-  expensesPerPage = parseInt(document.getElementById("expensesPerPage").value);
-  await getExpense(currentPage);
-}
-
+// Function to show pagination
 async function showPagination({
   currentpage,
   nextpage,
@@ -140,14 +165,14 @@ async function showPagination({
   prevPageBtn.addEventListener("click", async () => {
     if (haspreviouspage) {
       currentPage--;
-      await getExpense(currentPage);
+      getExpense(currentPage);
     }
   });
 
   nextPageBtn.addEventListener("click", async () => {
     if (hasnextpage) {
       currentPage++;
-      await getExpense(currentPage);
+      getExpense(currentPage);
     }
   });
 
@@ -156,14 +181,7 @@ async function showPagination({
   pagination.appendChild(nextPageBtn);
 }
 
-// Update the select element and fetch expenses based on the selected value
-document.getElementById("expensesPerPage").addEventListener("change", updateExpenses);
-
-// Initial call to fetch expenses based on the default expensesPerPage
-updateExpenses();
-
-
-
+// Function to add a new expense to the UI
 function addNewExpensetoUI(expense) {
   const parentElement = document.getElementById("listOfExpenses");
   const expenseElemId = `expense-${expense.id}`;
@@ -184,6 +202,7 @@ function addNewExpensetoUI(expense) {
   </tr>`;
 }
 
+// Function to delete an expense
 async function deleteExpense(e, expenseid) {
   e.preventDefault();
   const token = localStorage.getItem("token");
@@ -238,6 +257,7 @@ function openUpdateForm(e, expenseid) {
   expenseRow.innerHTML = `<td colspan="5">${updateForm}</td>`;
 }
 
+// Function to update an expense
 async function updateExpense(e, expenseid) {
   e.preventDefault();
   const { updatedExpenseAmount, updatedDescription, updatedCategory } =
@@ -275,6 +295,7 @@ async function updateExpense(e, expenseid) {
   }
 }
 
+// Function to show the leaderboard
 async function showLeaderboard() {
   const token = localStorage.getItem("token");
 
@@ -292,8 +313,8 @@ async function showLeaderboard() {
 
     // Adding h2 heading with different color
     var headingElem = document.createElement("h2");
-    headingElem.textContent = "Leader Board";
-
+    // headingElem.textContent = "LEADERBOARD ";  //&#128081
+    headingElem.innerHTML = "<br><br> &#127942 LEADERBOARD &#127942;";
     leaderboardElem.appendChild(headingElem);
 
     // Creating the leaderboard table
@@ -328,11 +349,13 @@ async function showLeaderboard() {
   }
 }
 
+// Function to remove an expense from the UI
 function removeExpensefromUI(expenseid) {
   const expenseElemId = `expense-${expenseid}`;
   document.getElementById(expenseElemId).remove();
 }
 
+// Event listener for the premium membership purchase button
 document.getElementById("rzp-button1").onclick = async function (e) {
   const token = localStorage.getItem("token");
   const response = await axios.get(
@@ -372,6 +395,7 @@ document.getElementById("rzp-button1").onclick = async function (e) {
   });
 };
 
+// Event listener to show the leaderboard
 document.getElementById("showLeaderboardBtn").addEventListener("click", () => {
   showLeaderboard();
 });
@@ -390,7 +414,7 @@ document.getElementById("download-expenses-button").onclick = async (e) => {
 
       if (response.status === 200) {
         const a = document.createElement("a");
-        a.href = response.data.fileURL;
+        a.href = response.data.fileURl;
         a.download = "myexpenses.csv";
         a.click();
       } else {
@@ -429,10 +453,18 @@ document.getElementById("show-old-downloads-button").onclick = async (e) => {
         response.data.prevDownloads &&
         response.data.prevDownloads.length > 0
       ) {
-        previousDownloadsElement.innerHTML += "<h1>Previous Downloads</h1>";
-
+        // previousDownloadsElement.innerHTML += "<br><h1>Previous Downloads</h1>";
+        previousDownloadsElement.innerHTML +=
+          '<br><br><h1 style="color: #c924c0; font-weight: bold;">&#9194; Previous Downloads &#9194;</h1>';
         response.data.prevDownloads.forEach((element) => {
-          previousDownloadsElement.innerHTML += `<li>${element.fileName}<button onclick="downloadFile('${element.fileURL}')">Download</button></li>`;
+          // previousDownloadsElement.innerHTML += `<li>${element.fileUrl}<button onclick="downloadFile('${element.fileUrl}')">Download</button></li>`;
+          previousDownloadsElement.innerHTML += `
+  <li>
+    ${element.fileUrl}
+    <button onclick="downloadFile('${element.fileUrl}')" style="background-color: #007bff; color: white; border: none; padding: 5px 10px; cursor: pointer;">
+      Download
+    </button>
+  </li>`;
         });
       } else {
         previousDownloadsElement.innerHTML +=
