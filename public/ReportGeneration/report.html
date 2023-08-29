@@ -1,98 +1,217 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Premium User Dashboard</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Reports</title>
+
+    <!-- ----------------------------------------------------------------------------- -->
+    <!-- css -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="./report.css">
+
+    <link rel="stylesheet" href="./report.css" />
 </head>
+
 <body>
-    <div class="dashboard">
-        <h1>Premium User Dashboard</h1>
-        
-        <!-- Display Overall Summary -->
-        <div class="summary">
-            <h2>Overall Summary</h2>
-            <p>Total Expenses: <span id="totalExpenses"></span></p>
-            <p>Total Income: <span id="totalIncome"></span></p>
-        </div>
-        
-        <!-- Daily Expenses -->
-        <div class="daily">
-            <h2>Daily Expenses</h2>
-            <select id="dailyDateSelect">
-                <!-- Populate options with date range -->
-            </select>
-            <ul id="dailyExpensesList"></ul>
-        </div>
-        
-        <!-- Weekly Expenses -->
-        <div class="weekly">
-            <h2>Weekly Expenses</h2>
-            <select id="weeklyDateSelect">
-                <!-- Populate options with date range -->
-            </select>
-            <ul id="weeklyExpensesList"></ul>
-        </div>
-        
-        <!-- Monthly Expenses -->
-        <div class="monthly">
-            <h2>Monthly Expenses</h2>
-            <select id="monthlyDateSelect">
-                <!-- Populate options with date range -->
-            </select>
-            <ul id="monthlyExpensesList"></ul>
-        </div>
-        
-        <!-- Download Expenses Report Button (Enabled for Premium Users) -->
-        <div class="download">
-            <button id="downloadButton" onclick="downloadReport()" disabled>Download Expenses Report</button>
+    <!--------------------------------------------------------------------------------- -->
+    <!-- Nav Bar -->
+
+    <nav class="navbar navbar-expand-lg ">
+        <a class="navbar-brand" href="#"> Expense Tracker &#8364;</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <!-- Add your menu items here -->
+            </ul>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end align-items-center">
+                <a class="top-link" href="../Home/expense.html">Home</a>
+                <a class="top-link" href="/login" id="logoutBtn">Log out</a>
+            </div>
         </div>
     </div>
-    
+</nav>
+
+
+    <!-- ----------------------------------------------------------------------- -->
+    <!-- Daily Table -->
+
+    <div class="container table-responsive mt-4 p-3 d-flex bd-highlight" id="table">
+        <!-- ------------------------------------------------------------------------- -->
+        <!-- Daily table Form -->
+
+        <div class="ps-2 pe-5 py-1 ms-3 me-5 my-1 bd-highlight">
+            <div class="my-1">
+                <h3>DAILY REPORTS</h3>
+            </div>
+            <div>
+                <form>
+                    <div class="mb-3">
+                        <label for="date" class="form-label"> Select Date</label>
+                        <input type="date" class="form-control" id="date" />
+                    </div>
+                    <button id="dateShowBtn" type="submit" class="btn btn-primary showBtn">Show</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="p-2 flex-grow-1 bd-highlight">
+            <table id="table1" class="table table-hover display" style="width: 100%">
+                <!-- ------------------------------------------------------------------------- -->
+                <!-- Daily table head -->
+
+                <thead>
+                    <tr>
+                        <th scope="col">Amount</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Date</th>
+                    </tr>
+                </thead>
+
+                <!-- ------------------------------------------------------------------------- -->
+                <!-- Daily table body -->
+
+                <tbody id="tbodyDailyId">
+                </tbody>
+                <tfoot id="tfootDailyId">
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+    <!-- ------------------------------------------------------------------------- -->
+    <!-- Monthly Table -->
+
+    <div class="container table-responsive mt-4 p-3 d-flex bd-highlight" id="table">
+        <!-- ------------------------------------------------------------------------- -->
+        <!-- Monthly table Form -->
+
+        <div class="px-2 py-1 ms-3 me-4 my-1 bd-highlight">
+            <div class="my-1">
+                <h3>MONTHLY REPORTS</h3>
+            </div>
+            <div>
+                <form>
+                    <div class="mb-3">
+                        <label for="month" class="form-label">Select Month</label>
+                        <input type="month" class="form-control" id="month" />
+                    </div>
+                    <button id="monthShowBtn" type="submit" class="btn btn-primary showBtn">Show</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="p-2 flex-grow-1 bd-highlight">
+            <table id="table2" class="table table-hover display" style="width: 100%">
+                <!-- ------------------------------------------------------------------------- -->
+                <!-- Monthly table head -->
+
+                <thead>
+                    <tr>
+                        <th scope="col">Amount</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Date</th>
+                    </tr>
+                </thead>
+
+                <!-- ------------------------------------------------------------------------- -->
+                <!-- Monthly table body -->
+
+                <tbody id="tbodyMonthlyId">
+
+                </tbody>
+
+                <tfoot id="tfootMonthlyId">
+
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+    <!-- ------------------------------------------------------------------------- -->
+    <!-- Yearly Table -->
+
+    <!-- <div
+      class="container table-responsive mt-4 mb-3 p-3 d-flex bd-highlight"
+      id="table"
+    > -->
+    <!-- ------------------------------------------------------------------------- -->
+    <!-- Yearly table Form -->
+
+    <!-- <div class="ps-2 pe-4 py-1 ms-3 me-5 my-1 bd-highlight">
+        <div class="my-1">
+          <h3>YEARLY REPORTS</h3>
+        </div>
+        <div>
+          <form>
+            <div class="mb-3">
+              <label for="year-input" class="form-label"></label>
+              <select id="year-input" name="year-input">
+                <option value="">Select year</option>
+                <option value="2015">2015</option>
+                <option value="2016">2016</option>
+                <option value="2017">2017</option>
+                <option value="2018">2018</option>
+                <option value="2019">2019</option>
+                <option value="2020">2020</option>
+                <option value="2021">2021</option>
+                <option value="2022">2022</option>
+                <option value="2023">2023</option>
+                <!-- add more options as needed -->
+    <!-- </select>
+            </div>
+            <button type="submit" class="btn btn-primary showBtn">Show</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="p-2 flex-grow-1 bd-highlight">
+        <table id="" class="table table-hover" style="width: 100%"> -->
+    <!-- ------------------------------------------------------------------------- -->
+    <!-- Yearly table head -->
+
+    <!-- <thead>
+            <tr>
+              <th scope="col">Month</th>
+              <td></td>
+              <th scope="col" style="width: 20%">Amount</th>
+            </tr>
+          </thead> -->
+
+    <!-- ------------------------------------------------------------------------- -->
+    <!-- Yearly table body -->
+
+    <!-- <tbody id="tbodyId">
+            <tr class="trStyle">
+              <td>January</td>
+              <td></td>
+              <td>9000</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr class="trStyle">
+              <td></td>
+              <td id="yearlyTotal">Total</td>
+              <td id="yearlyTotalAmount">9000</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div> -->
+
+    <!-- ---------------------------------------------------------------------------------- -->
+    <!-- scripts -->
+
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
-    <script src="../Home/expense.js"></script>
-    <script>
-        // Define a function to populate date range options in select elements
-        function populateDateRangeSelect(selectId, dateRanges) {
-            const select = document.getElementById(selectId);
-            for (const range of dateRanges) {
-                const option = document.createElement('option');
-                option.value = range.value;
-                option.textContent = range.label;
-                select.appendChild(option);
-            }
-        }
-        
-        // Example date ranges (you can replace these with actual date ranges)
-        const dailyDateRanges = [
-            { value: '2023-08-01', label: 'August 1, 2023' },
-            { value: '2023-08-02', label: 'August 2, 2023' },
-            // ... Add more date ranges ...
-        ];
-        
-        const weeklyDateRanges = [
-            { value: '2023-08-01', label: 'Week of August 1, 2023' },
-            { value: '2023-08-08', label: 'Week of August 8, 2023' },
-            // ... Add more date ranges ...
-        ];
-        
-        const monthlyDateRanges = [
-            { value: '2023-08', label: 'August 2023' },
-            { value: '2023-09', label: 'September 2023' },
-            // ... Add more date ranges ...
-        ];
-        
-        // Populate select elements with date ranges
-        populateDateRangeSelect('dailyDateSelect', dailyDateRanges);
-        populateDateRangeSelect('weeklyDateSelect', weeklyDateRanges);
-        populateDateRangeSelect('monthlyDateSelect', monthlyDateRanges);
-        
-        // Function to download the report
-        function downloadReport() {
-            // Implement your logic to generate and download the report here
-        }
-    </script>
+    <script src="./report.js"></script>
 </body>
+
 </html>

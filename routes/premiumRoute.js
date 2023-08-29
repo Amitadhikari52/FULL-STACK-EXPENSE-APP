@@ -10,6 +10,6 @@ router.get('/showLeaderBoard', authenticatemiddleware.authenticate,premiumFeatur
 
 router.get('/download-expense',authenticatemiddleware.authenticate, premiumFeatureController.downloadexpense);
 
-router.get('/show-old-downloads',authenticatemiddleware.authenticate,premiumFeatureController.showUsersDownloads)
+router.get('/show-old-downloads',authenticatemiddleware.authenticate,premiumFeatureController.showUsersDownloads);
 
 module.exports = router;

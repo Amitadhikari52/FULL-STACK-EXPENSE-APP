@@ -43,6 +43,38 @@ const getexpenses = async (req, res) => {
   }
 };
 
+// const getexpenses = async (req, res) => {
+  const getAllExpensesforPagination = async (req, res, next) => {
+  try {
+    const PAGE = +req.params.page || 1;
+    const ITEMS_PER_PAGE = +req.query.count || 5;
+
+    const userId = req.user.id;
+
+    const count = await Expense.count({ where: { UserId: userId } });
+
+    const expenses = await Expense.findAll({
+      offset: (PAGE - 1) * ITEMS_PER_PAGE,
+      limit: ITEMS_PER_PAGE,
+      where: { UserId: userId }
+    });
+
+    return res.status(200).json({
+      expenses: expenses,
+      currentpage: PAGE,
+      hasnextpage: ITEMS_PER_PAGE * PAGE < count,
+      nextpage: PAGE + 1,
+      haspreviouspage: PAGE > 1,
+      previouspage: PAGE - 1,
+      lastpage: Math.ceil(count / ITEMS_PER_PAGE),
+      success: true
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: err, success: false });
+  }
+};
+
 
 
 const deleteexpense = async (req, res) => {
@@ -113,4 +145,5 @@ module.exports = {
   getexpenses,
   addexpense,
   updateexpense,
+  getAllExpensesforPagination
 };

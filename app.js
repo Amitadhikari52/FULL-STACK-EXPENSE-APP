@@ -9,7 +9,7 @@ const User = require('./models/userModel');
 const Expense = require('./models/expenseModel');
 const Order = require('./models/ordersModel');
 const Forgotpassword = require('./models/forgotpasswordModel');
-const Downloads = require('./models/downloadedReportsModel');
+const DownloadedReports = require('./models/downloadedReportsModel');
 
 
 const userRoutes = require('./routes/userRoute'); 
@@ -17,6 +17,7 @@ const expenseRoutes = require('./routes/expenseRoute')
 const purchaseRoutes = require('./routes/purchaseRoute')
 const premiumFeatureRoutes = require('./routes/premiumRoute')
 const resetPasswordRoutes = require('./routes/passwordRoute');
+const reportsRoutes = require('./routes/reportsRouter');
 const app = express();
 
 
@@ -32,6 +33,7 @@ app.use('/expenses', expenseRoutes);
 app.use('/purchase', purchaseRoutes);
 app.use('/premium', premiumFeatureRoutes);
 app.use('/password',resetPasswordRoutes);
+app.use("/reports", reportsRoutes);
 
 
 // Serve main dashboard page
@@ -39,7 +41,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'dashboard.html'));
 });
 
-// Serve main dashboard page
+// Serve login page
 app.get('/login',(req,res)=>{
   res.sendFile(path.join(__dirname,'public/login','login.html'))
 });
@@ -55,6 +57,11 @@ app.get('/expenses', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/Home', 'expense.html'));
 });
 
+// Serve reports page
+app.get('/reports', (req, res ) => {
+  res.sendFile(path.join(__dirname, 'public/ReportGeneration', 'report.html'));
+});
+
 
 // Define associations
 User.hasMany(Expense);
@@ -66,8 +73,8 @@ Order.belongsTo(User);
 User.hasMany(Forgotpassword);
 Forgotpassword.belongsTo(User);
 
-User.hasMany(Downloads);
-Downloads.belongsTo(User);
+User.hasMany(DownloadedReports);
+DownloadedReports.belongsTo(User);
 
 
 
