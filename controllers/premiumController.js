@@ -50,14 +50,11 @@ const downloadexpense = async (req, res) => {
     const fileURl = await S3Service.uploadToS3(stringifiedExpenses, filename);
     console.log(fileURl);
 
-    //insert into tble -- id,fnme,furl,cretedon
-
     // Save download history in the DownloadedReports table
     await DownloadedReports.create({
       fileUrl: fileURl,
       userId: userId, // Associate the user ID
       createdAt: new Date(), // Record the download date
-      // downloadDate: new Date(),
     });
 
     res.status(200).json({ fileURl, success: true });
@@ -69,10 +66,6 @@ const downloadexpense = async (req, res) => {
 
 const showUsersDownloads = async (req, res) => {
   try {
-    // const usersTbId = req.user.userId;
-    // const prevDownloads = await Downloads.findAll({where:{usersTbId}})
-    // if(prevDownloads){
-
     // Get the user ID from the authenticated user
     const userId = req.user.id; // Assuming your User model has a field named 'id'
 

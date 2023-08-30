@@ -11,13 +11,7 @@ const getReportsPage = (req, res, next) => {
 
 const dailyReports = async (req, res, next) => {
   try {
-    // const formattedDate = req.body.date;
     const formattedDate = new Date(req.body.date); // Parse date here
-
-    // const expenses = await Expense.findAll({
-    //   where: { createdAt: formattedDate, userId: req.user.id },
-    // });
-
     const expenses = await Expense.findAll({
       where: {
         createdAt: {
@@ -38,19 +32,7 @@ const dailyReports = async (req, res, next) => {
 
 const monthlyReports = async (req, res, next) => {
   try {
-    // const month = req.body.month;
     const formattedMonth = new Date(req.body.month); // Parse month here
-
-    // const expenses = await Expense.findAll({
-    //   where: {
-    //     createdAt: {
-    //       [Op.like]: `%-${month}-%`,
-    //     },
-    //     userId: req.user.id,
-    //   },
-    //   raw: true,
-    // });
-
     const expenses = await Expense.findAll({
       where: {
         createdAt: {

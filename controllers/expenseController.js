@@ -43,7 +43,6 @@ const getexpenses = async (req, res) => {
   }
 };
 
-// const getexpenses = async (req, res) => {
   const getAllExpensesforPagination = async (req, res, next) => {
   try {
     const PAGE = +req.params.page || 1;
