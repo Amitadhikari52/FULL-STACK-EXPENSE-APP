@@ -1,8 +1,12 @@
 const path = require('path');
+const fs = require("fs");
 const express = require('express');
 const cors = require('cors');
 const sequelize = require('./util/db');
 const dotenv = require('dotenv');
+
+const helmet = require("helmet");
+const morgan = require("morgan");
 
 
 const User = require('./models/userModel');
@@ -26,6 +30,14 @@ dotenv.config();
 
 app.use(cors());
 app.use(express.json());
+
+// app.use(helmet({contentSecurityPolicy: false,crossOriginEmbedderPolicy: false,}));
+app.use(helmet());
+
+//log file
+const accessLogStream = fs.createWriteStream(path.join(__dirname, "access.log"),{ flags: "a" });
+
+app.use(morgan("combined", { stream: accessLogStream }));
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/user', userRoutes);
@@ -79,13 +91,7 @@ DownloadedReports.belongsTo(User);
 
 
 // Start server after syncing with database
-sequelize.sync({ alter: false })
-  .then(() => {
-    app.listen(3000, () => {
-      console.log('Server is running on port 3000');
-    });
-  })
-  .catch(err => {
-    console.error('Database synchronization error:', err);
-  });
 
+sequelize.sync()
+    .then(res=>{ app.listen(process.env.PORT || 3000) })
+    .catch(err=>console.log("error in connection..",err))
