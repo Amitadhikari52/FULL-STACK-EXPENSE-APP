@@ -1,5 +1,5 @@
-
 const Sequelize = require('sequelize');
+require("dotenv").config();
 
 const sequelize = new Sequelize(
   process.env.DB_DATABASE,
@@ -10,4 +10,15 @@ const sequelize = new Sequelize(
   host: process.env.DB_HOST  
 });
 
+
+// const sequelize = new Sequelize(
+//   'expense_tracker',
+//   'root',
+//   'root123',
+// {
+//   dialect: 'mysql',
+//   // host: 'localhost:3306'
+//   host: 'localhost'
+// });
 module.exports = sequelize;
+

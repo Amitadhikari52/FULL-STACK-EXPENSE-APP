@@ -50,41 +50,38 @@ function parseJwt(token) {
   return JSON.parse(jsonPayload);
 }
 
-// Event listener when the DOM is loaded
 window.addEventListener("DOMContentLoaded", async () => {
   const token = localStorage.getItem("token");
   if (!token) {
     window.location.href = "/login";
     return;
   }
+
+  // Define the parseJwt function to decode the token
   const decodeToken = parseJwt(token);
   console.log(decodeToken);
-  ispremiumuser = decodeToken.ispremiumuser;
+  const ispremiumuser = decodeToken.ispremiumuser;
   console.log("Is Premium User:", ispremiumuser);
+
+ 
   if (ispremiumuser) {
     showPremiumuserMessage();
-    // showLeaderboard();
-    document.getElementById("showLeaderboardBtn").style.display = "block"; // Show the button for premium users
-
-    getExpense(1);
-    // try {
-    //   const response = await axios.get(
-    //     "http://localhost:3000/expenses/getexpenses",
-    //     {
-    //       headers: { Authorization: token },
-    //     }
-    //   );
-    //   response.data.expenses.forEach((expense) => {
-    //     addNewExpensetoUI(expense);
-    //   });
-
-    //   // Fetch and display expenses on initial page load
-    //   //getExpense(currentPage);
-    // } catch (err) {
-    //   showError(err);
-    // }
+    // Show the button for premium users
+    document.getElementById("showLeaderboardBtn").style.display = "block"; 
+    document.getElementById("Reportbutton").style.display = "block"; 
+    document.getElementById("download-expenses-button").style.display = "block"; 
+    document.getElementById("show-old-downloads-button").style.display = "block"; 
+  } else {
+    // Hide features for non-premium users
+    document.getElementById("showLeaderboardBtn").style.display = "none";
+    document.getElementById("Reportbutton").style.display = "none";
+    document.getElementById("download-expenses-button").style.display = "none";
+    document.getElementById("show-old-downloads-button").style.display = "none";
   }
+
+  getExpense(1);
 });
+
 
 // Pagination variables
 let currentPage = 1;
@@ -401,38 +398,76 @@ document.getElementById("showLeaderboardBtn").addEventListener("click", () => {
 });
 
 // Function to handle downloading expenses
-document.getElementById("download-expenses-button").onclick = async (e) => {
-  if (ispremiumuser) {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await axios.get(
-        "http://localhost:3000/premium/download-expense",
-        {
-          headers: { Authorization: token },
-        }
-      );
+// document.getElementById("download-expenses-button").onclick = async (e) => {
+//   if (ispremiumuser) {
+//     try {
+//       const token = localStorage.getItem("token");
+//       const response = await axios.get(
+//         "http://localhost:3000/premium/download-expense",
+//         {
+//           headers: { Authorization: token },
+//         }
+//       );
 
-      if (response.status === 200) {
-        const a = document.createElement("a");
-        a.href = response.data.fileURl;
-        a.download = "myexpenses.csv";
-        a.click();
-      } else {
-        throw new Error(response.data.message);
+//       if (response.status === 200) {
+//         const a = document.createElement("a");
+//         a.href = response.data.fileURl;
+//         a.download = "myexpenses.csv";
+//         a.click();
+//       } else {
+//         throw new Error(response.data.message);
+//       }
+//     } catch (errMsg) {
+//       console.log(errMsg);
+//       displayMessage("Failed to download expenses", false);
+//     }
+//   } else {
+//     console.log("Non-premium user access");
+//     displayMessage(
+//       "You are not a premium user. Upgrade to access this feature.",
+//       false
+//     );
+//     // Optionally show a message or take action for non-premium users
+//   }
+// };
+
+// Function to handle downloading expenses
+document.getElementById("download-expenses-button").onclick = async (e) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await axios.get(
+      "http://localhost:3000/premium/download-expense",
+      {
+        headers: { Authorization: token },
       }
-    } catch (errMsg) {
-      console.log(errMsg);
-      displayMessage("Failed to download expenses", false);
-    }
-  } else {
-    console.log("Non-premium user access");
-    displayMessage(
-      "You are not a premium user. Upgrade to access this feature.",
-      false
     );
-    // Optionally show a message or take action for non-premium users
+
+    if (response.status === 200) {
+      // Download the file as the user is a premium user
+      const a = document.createElement("a");
+      a.href = response.data.fileURl;
+      a.download = "myexpenses.csv";
+      a.click();
+    } else {
+      // Handle server response for non-premium users
+      if (response.data.message === "Not a premium user") {
+        displayMessage(
+          "You are not a premium user. Upgrade to access this feature.",
+          false
+        );
+      } else {
+        // Handle other server errors
+        console.error(response.data.message);
+        displayMessage("Failed to download expenses", false);
+      }
+    }
+  } catch (errMsg) {
+    console.log(errMsg);
+    displayMessage("Failed to download expenses", false);
   }
 };
+
+
 
 // Function to show previous downloads
 document.getElementById("show-old-downloads-button").onclick = async (e) => {
