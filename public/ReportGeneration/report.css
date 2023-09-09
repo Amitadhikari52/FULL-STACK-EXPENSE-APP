@@ -110,7 +110,9 @@ body {
 
 /* Styles for the table headers */
 .table th {
+  /* background-color: #f8f9fa; */
   background-color: #f8f9fa;
+
 }
 
 /* Styles for the table rows */

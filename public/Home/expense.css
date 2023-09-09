@@ -16,17 +16,38 @@ body {
 }
 
 .container {
-  background-color: #fff;
+  background-color: #f0f0f0; /* Light gray background */
+  border: 1px solid #dcdcdc; /* Light gray border */
+  margin-top: 20px;
   border-radius: 10px;
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow */
   overflow: hidden;
-  width: 90%; /* Make it slightly wider */
-  max-width: 900px; /* Limit the maximum width */
+  width: 90%;
+  max-width: 900px;
   padding: 20px;
-  box-sizing: border-box; /* Ensure padding doesn't affect total width */
+  box-sizing: border-box;
   position: relative;
   margin: 0 auto;
 }
+
+.table {
+  width: 100%;
+  font-size: 16px;
+  background-color: #ffffff; /* White background for the table */
+  border: 1px solid #DFCFBE;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.table th {
+  background-color: #F4D03F; /* Slightly off-white background for table headers */
+}
+.table td {
+  background-color: #fff; /* Slightly off-white background for table headers */
+}
+
+/* Rest of your existing styles */
+
 
 .delete-button {
   background: none;
@@ -66,10 +87,10 @@ body {
 .table {
   width: 100%;
   font-size: 16px;
-}
-
-.table th {
-  background-color: #f5f5f5;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .table th,
@@ -342,6 +363,9 @@ body {
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
+  border: 1px solid #DFCFBE;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 #leaderboard th,
@@ -352,7 +376,10 @@ body {
 }
 
 #leaderboard th {
-  background-color: whitesmoke;
+  background-color: #F4D03F;
+}
+#leaderboard td {
+  background-color: #fff;;
 }
 /* ... Rest of your existing styles */
 

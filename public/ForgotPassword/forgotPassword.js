@@ -1,5 +1,4 @@
 function forgotpassword(e) {
-    debugger;
   e.preventDefault();
   console.log(e.target.name);
   const form = new FormData(e.target);

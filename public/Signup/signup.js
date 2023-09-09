@@ -1,6 +1,5 @@
 async function signup(e) {
     try {
-        debugger;
         e.preventDefault();
         console.log(e.target.email.value);
 

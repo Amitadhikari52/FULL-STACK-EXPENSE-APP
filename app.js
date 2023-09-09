@@ -6,6 +6,7 @@ const sequelize = require('./util/db');
 const dotenv = require('dotenv');
 
 const helmet = require("helmet");
+const compression = require('compression');
 const morgan = require("morgan");
 
 
@@ -31,8 +32,13 @@ dotenv.config();
 app.use(cors());
 app.use(express.json());
 
-// app.use(helmet({contentSecurityPolicy: false,crossOriginEmbedderPolicy: false,}));
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+  })
+);
+
+app.use(compression());
 
 //log file
 const accessLogStream = fs.createWriteStream(path.join(__dirname, "access.log"),{ flags: "a" });
@@ -89,9 +95,8 @@ User.hasMany(DownloadedReports);
 DownloadedReports.belongsTo(User);
 
 
-
 // Start server after syncing with database
 
 sequelize.sync()
-    .then(res=>{ app.listen(process.env.PORT || 3000) })
+    .then(()=>{ app.listen(process.env.PORT || 3000) })
     .catch(err=>console.log("error in connection..",err))

@@ -3,19 +3,18 @@
 
 <head>
     <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" > -->
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Expense Tracker</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="../Home/expense.css">
-
-    <head>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
-    </head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
 
 <body>
-    <nav class="navbar navbar-expand-lg ">
+    <!-- <nav class="navbar navbar-expand-lg ">
         <a class="navbar-brand" href="#">Expense Tracker &#8364; </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,6 +48,49 @@
                     </a>
                 </li>
                 <!-- Add other navigation items here if needed -->
+    <!-- </ul>
+        </div>
+    </nav> --> -->
+
+    <nav class="navbar navbar-expand-lg ">
+        <a class="navbar-brand" href="#">Expense Tracker &#8364;</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+
+                <li class="nav-item">
+                    <a href="../ReportGeneration/report.html"><button id="Reportbutton" class="btn btn-primary">
+                            <i class="fas fa-file-alt" style="color:goldenrod;"></i> Report
+                        </button></a>
+                </li>
+                <li class="nav-item">
+                    <button id="showLeaderboardBtn" class="btn btn-primary">
+                        <i class="fas fa-trophy" style="color:goldenrod;"></i> Leaderboard
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="btn btn-primary" id="download-expenses-button">
+                        <i class="fas fa-download" style="color:goldenrod;"></i> Download Expenses
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="btn btn-primary" id="show-old-downloads-button">
+                        <i class="fas fa-history" style="color:goldenrod;"></i> Previous Downloads
+                    </button>
+                </li>
+                <!-- <li class="nav-item">
+                    <a href="/" id="dashboard-button"  class="btn btn-primary navbar-btn">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                </li> -->
+                <li class="nav-item">
+                    <a href="/login" id="dashboard-button"  class="btn btn-primary navbar-btn dashboard-button">
+                        <i class="fas fa-sign-out-alt"></i> Log Out
+                    </a>
+                </li>
             </ul>
         </div>
     </nav>
@@ -117,7 +159,8 @@
 
         <!-- Add a dropdown for choosing the number of expenses per page -->
         <div style="display: flex; align-items: center;">
-            <label for="expensesPerPage" style="color:#176b14; font-weight: bold; margin-right: 10px;" >Expenses per page:</label>
+            <label for="expensesPerPage" style="color:#176b14; font-weight: bold; margin-right: 10px;">Expenses per
+                page:</label>
             <select id="expensesPerPage">
                 <option value="5">5</option>
                 <option value="8">8</option>
@@ -125,14 +168,14 @@
                 <option value="20">20</option>
                 <option value="40">40</option>
             </select>
-            
+
             <div class="pagination" id="pagination" style="margin-left: auto;">
                 <button id="prevPageBtn" class="btn btn-primary">Previous</button>
                 <span id="currentPage" style="margin: 0 10px;">1</span>
                 <button id="nextPageBtn" class="btn btn-primary">Next</button>
             </div>
         </div>
-        
+
 
 
         <!-- Leaderboard section -->
