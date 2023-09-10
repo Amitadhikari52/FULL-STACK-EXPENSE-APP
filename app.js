@@ -54,6 +54,12 @@ app.use('/password',resetPasswordRoutes);
 app.use("/reports", reportsRoutes);
 
 
+// app.use((req,res) => {
+//   console.log('urlll', req.url);
+//   res.sendFile(path.join(__dirname, `public/${req.url}`));
+// })
+
+
 // Serve main dashboard page
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'dashboard.html'));
