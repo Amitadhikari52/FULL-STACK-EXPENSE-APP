@@ -67,7 +67,7 @@ app.get('/', (req, res) => {
 
 // Serve login page
 app.get('/login',(req,res)=>{
-  res.sendFile(path.join(__dirname,'public/login','login.html'))
+  res.sendFile(path.join(__dirname,'public/Login','login.html'))
 });
 
 
