@@ -109,7 +109,7 @@ async function getMonthlyReport(e) {
 
     let totalAmount = 0;
     const res = await axios.post(
-      "http://13.51.159.108/:3000/reports/monthlyReports",
+      "http://13.51.159.108:3000/reports/monthlyReports",
       {
         month: formattedMonth,
       },

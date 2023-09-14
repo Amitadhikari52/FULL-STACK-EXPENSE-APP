@@ -366,7 +366,7 @@ document.getElementById("rzp-button1").onclick = async function (e) {
     // This handler function will handle the success payment
     handler: async function (response) {
       const res = await axios.post(
-        "hhttp://13.51.159.108:3000/purchase/updatetransactionstatus",
+        "http://13.51.159.108:3000/purchase/updatetransactionstatus",
         {
           order_id: options.order_id,
           payment_id: response.razorpay_payment_id,
