@@ -63,7 +63,6 @@ app.use("/reports", reportsRoutes);
 // Serve main dashboard page
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'dashboard.html'));
-  console.log('request is successfull');
 });
 
 // Serve login page
