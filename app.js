@@ -84,7 +84,6 @@ app.get('/expenses', (req, res) => {
 // Serve reports page
 app.get('/reports', (req, res ) => {
   res.sendFile(path.join(__dirname, 'public/ReportGeneration', 'report.html'));
-  console.log("hello")
 });
 
 
