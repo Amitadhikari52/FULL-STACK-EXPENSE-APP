@@ -13,9 +13,13 @@ const forgotpassword = async (req, res) => {
     const apiKey = client.authentications['api-key']
     apiKey.apiKey = process.env.API_KEY
 
+    console.log("api-key",apiKey);
+    console.log("env.API_KEY",process.env.API_KEY);
+
     const tranEmailApi = new Sib.TransactionalEmailsApi();
     const { email } = req.body;
     const user = await User.findOne({ where: { email } });
+    console.log("user",user);
 
     if (user) {
       const id = uuid.v4();
@@ -37,6 +41,7 @@ const forgotpassword = async (req, res) => {
         // htmlContent: `<a href="http://localhost:3000/password/resetpassword/${id}">Reset Password</a>`,
         htmlContent: `<a href="http://13.51.159.108:3000/password/resetpassword/${id}">Reset Password</a>`,
       };
+      console.log("emailContent",emailContent);
 
       await tranEmailApi.sendTransacEmail({
         sender,
