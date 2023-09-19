@@ -10,7 +10,8 @@ const forgotpassword = async (req, res) => {
   try {
     const client = Sib.ApiClient.instance;
 
-    const apiKey = client.authentications['api-key']
+    const apiKey = client.authentications['api-key'];
+    
     apiKey.apiKey = process.env.API_KEY;
 
     console.log("api-key",apiKey);
