@@ -1,4 +1,3 @@
-const ForgotPassword = require("../../models/forgotpasswordModel");
 
 function forgotpassword(e) {
   e.preventDefault();
