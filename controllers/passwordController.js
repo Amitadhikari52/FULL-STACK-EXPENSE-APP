@@ -9,14 +9,12 @@ const Forgotpassword = require('../models/forgotpasswordModel');
 const forgotpassword = async (req, res) => {
   try {
     const client = Sib.ApiClient.instance;
-    
-    
+
     const apiKey = client.authentications['api-key']
     apiKey.apiKey = process.env.API_KEY
 
-    const tranEmailApi =-client.TransactionalEmailsApi();
+    const tranEmailApi = new Sib.TransactionalEmailsApi();
 
-    console.log("tranemailcheck",tranEmailApi);
     const { email } = req.body;
     const user = await User.findOne({ where: { email } });
 
