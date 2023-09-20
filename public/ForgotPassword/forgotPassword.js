@@ -1,4 +1,4 @@
-const ForgotPassword = require("../../models/forgotpasswordModel");
+
 
 function forgotpassword(e) {
   e.preventDefault();
@@ -10,7 +10,7 @@ function forgotpassword(e) {
 
   }
   console.log(userDetails)
-  axios.post('http://13.51.159.108:3000/password/forgotpassword',userDetails).then(response => {
+  axios.post('http://localhost:3000/password/forgotpassword',userDetails).then(response => {
       if(response.status === 200){
           document.body.innerHTML += '<div style="color:green;">Mail Successfuly sent <div>'
       } else {
