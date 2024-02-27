@@ -7,7 +7,8 @@ async function login(e) {
             password: e.target.password.value
         };
         console.log(loginDetails);
-        const response = await axios.post('http://13.51.159.108:3000/user/login',loginDetails).then(response => {
+        // const response = await axios.post('http://13.51.159.108:3000/user/login',loginDetails).then(response => {
+        const response = await axios.post('http://localhost:3000/user/login',loginDetails).then(response => {
             if (response.status === 200) {
                 alert(response.data.message);
                 localStorage.setItem('token',response.data.token)

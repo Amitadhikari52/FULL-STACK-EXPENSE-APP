@@ -36,8 +36,8 @@ const forgotpassword = async (req, res) => {
       const emailContent = {
         subject: 'Sending with Sendinblue is Fun',
         text: 'and easy to do anywhere, even with Node.js',
-        // htmlContent: `<a href="http://localhost:3000/password/resetpassword/${id}">Reset Password</a>`,
-        htmlContent: `<a href="http://13.51.159.108:3000/password/resetpassword/${id}">Reset Password</a>`,
+        htmlContent: `<a href="http://localhost:3000/password/resetpassword/${id}">Reset Password</a>`,
+        // htmlContent: `<a href="http://13.51.159.108:3000/password/resetpassword/${id}">Reset Password</a>`,
       };
 
       await tranEmailApi.sendTransacEmail({
